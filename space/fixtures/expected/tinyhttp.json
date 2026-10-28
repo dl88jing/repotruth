@@ -1,0 +1,55 @@
+{
+  "repo": "tinyhttp",
+  "summary": "Client defaults and Response.json() behavior contradict the README.",
+  "findings": [
+    {
+      "id": "TH1",
+      "severity": "high",
+      "title": "Default timeout is 5s, README says 30s",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/client.py"
+      ],
+      "evidence": "DEFAULT_TIMEOUT = 5.0 vs README '30 seconds'.",
+      "suggested_fix": "Change DEFAULT_TIMEOUT to 30.0 or update README.",
+      "confidence": 0.98
+    },
+    {
+      "id": "TH2",
+      "severity": "high",
+      "title": "Retries default to 0, README says 3",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/client.py"
+      ],
+      "evidence": "DEFAULT_RETRIES = 0 vs README '3 attempts'.",
+      "suggested_fix": "Set DEFAULT_RETRIES = 3 or fix docs.",
+      "confidence": 0.97
+    },
+    {
+      "id": "TH3",
+      "severity": "medium",
+      "title": "Response.json() is not always available",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/client.py"
+      ],
+      "evidence": "README claims `.json()` always available; implementation raises unless content-type is JSON.",
+      "suggested_fix": "Document the content-type guard or make json() best-effort.",
+      "confidence": 0.91
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1380,
+    "completion_tokens": 500,
+    "reasoning_tokens": 340,
+    "total_tokens": 1880
+  },
+  "reasoning_effort": "medium"
+}

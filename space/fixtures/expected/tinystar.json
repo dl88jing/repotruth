@@ -1,0 +1,55 @@
+{
+  "repo": "tinystar",
+  "summary": "Router docs misstate handler async requirements, middleware order, and path-param syntax.",
+  "findings": [
+    {
+      "id": "TS1",
+      "severity": "medium",
+      "title": "route() does not require async handlers",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/router.py"
+      ],
+      "evidence": "README says Router.route is an async decorator; implementation accepts any Callable.",
+      "suggested_fix": "Document that sync and async handlers are both accepted.",
+      "confidence": 0.9
+    },
+    {
+      "id": "TS2",
+      "severity": "high",
+      "title": "Middleware runs before handlers, not after",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/router.py"
+      ],
+      "evidence": "README: middleware runs after handler. use() docstring and list order imply before.",
+      "suggested_fix": "Correct README to 'before the handler'.",
+      "confidence": 0.93
+    },
+    {
+      "id": "TS3",
+      "severity": "medium",
+      "title": "Path params documented as :id but code uses raw paths / {id} convention",
+      "doc_refs": [
+        "README.md"
+      ],
+      "code_refs": [
+        "src/router.py"
+      ],
+      "evidence": "README documents `:id` syntax; match() does exact string equality with no :id parsing.",
+      "suggested_fix": "Implement :id parsing or document exact-path matching only.",
+      "confidence": 0.88
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1520,
+    "completion_tokens": 540,
+    "reasoning_tokens": 360,
+    "total_tokens": 2060
+  },
+  "reasoning_effort": "medium"
+}

@@ -1,0 +1,58 @@
+{
+  "repo": "tinyclick",
+  "summary": "Three documentation lies: wrong flag name, missing glob support, and incorrect exit code on missing files.",
+  "findings": [
+    {
+      "id": "TC1",
+      "severity": "high",
+      "title": "Flag mismatch: docs say --count, code implements --times",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README and docs/cli.md document `--count`; argparse defines `--times` only.",
+      "suggested_fix": "Either rename the flag to `--count` or update docs to `--times`.",
+      "confidence": 0.95
+    },
+    {
+      "id": "TC2",
+      "severity": "medium",
+      "title": "Docs claim glob / --recursive support that does not exist",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README mentions globs `src/**/*.py` and docs list `--recursive`; cli.py has neither.",
+      "suggested_fix": "Remove glob/--recursive claims or implement them.",
+      "confidence": 0.92
+    },
+    {
+      "id": "TC3",
+      "severity": "high",
+      "title": "Missing-file exit code is 2, docs say 0",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "Docs: exit 0 on missing file. Code returns 2.",
+      "suggested_fix": "Align docs to exit code 2, or change return to 0 if non-fatal is intended.",
+      "confidence": 0.97
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1840,
+    "completion_tokens": 620,
+    "reasoning_tokens": 410,
+    "total_tokens": 2460
+  },
+  "reasoning_effort": "medium"
+}

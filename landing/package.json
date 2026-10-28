@@ -1,0 +1,7 @@
+{
+  "name": "repotruth-landing",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p dist && cp -r public/* dist/"
+  }
+}

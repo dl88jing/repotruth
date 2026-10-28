@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RepoTruth — Catch documentation that lies | Beam</title>
+<meta name="description" content="RepoTruth packs a whole repo into one Beam call and finds documentation that contradicts the code. Built for Build with Beam by Green Robin Labs."/>
+<meta property="og:title" content="RepoTruth — Beam docs vs code auditor"/>
+<meta property="og:description" content="Catch documentation that lies. 1M context. Token thrift meter. Green Robin Labs."/>
+<meta property="og:image" content="/cover.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;550;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #07090f; --fg: #e8ecf7; --muted: #9aa3b8; --accent: #7c5cff;
+  --accent2: #22d3ee; --card: #121624; --danger: #fb7185; --ok: #34d399;
+}
+* { box-sizing: border-box; }
+body {
+  margin:0; font-family:"IBM Plex Sans",system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 10% -10%, #1a1040 0%, transparent 55%),
+              radial-gradient(900px 500px at 100% 0%, #0b3a45 0%, transparent 50%),
+              var(--bg);
+  color: var(--fg); line-height:1.5;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+.nav { display:flex; gap:1rem; align-items:center; justify-content:space-between; margin-bottom:2.5rem; }
+.brand { font-weight:700; letter-spacing:-0.02em; }
+.badges { display:flex; flex-wrap:wrap; gap:0.4rem; margin:1rem 0 1.5rem; }
+.badge { font-size:12px; padding:0.25rem 0.7rem; border-radius:999px; border:1px solid #2a3150; color:var(--muted); background:#0d1220; }
+.badge.hot { border-color:#5b4bd6; color:#c4b5fd; background:#16102e; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height:1.05; letter-spacing:-0.03em; margin:0 0 0.75rem; }
+.lead { font-size:1.2rem; color:var(--muted); max-width:42rem; }
+.cta { display:flex; flex-wrap:wrap; gap:0.75rem; margin:1.75rem 0 2.5rem; }
+.btn {
+  display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 1.15rem;
+  border-radius:12px; font-weight:600; border:1px solid transparent;
+}
+.btn.primary { background: linear-gradient(135deg, var(--accent), #4f46e5); color:white; }
+.btn.ghost { background: transparent; border-color:#2a3150; color:var(--fg); }
+.grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
+.card {
+  background: linear-gradient(180deg, #161a2b, #101424); border:1px solid #242a44;
+  border-radius:16px; padding:1.15rem 1.2rem;
+}
+.card h3 { margin:0 0 0.4rem; font-size:1.05rem; }
+.card p { margin:0; color:var(--muted); font-size:0.95rem; }
+.meter {
+  margin-top:2.5rem; padding:1.25rem; border-radius:16px; border:1px solid #24304a;
+  background: #0c1220; font-family:"IBM Plex Mono", monospace; font-size:0.9rem;
+}
+.bar { height:10px; border-radius:999px; background:#1c2438; overflow:hidden; margin:0.5rem 0 1rem; }
+.bar > span { display:block; height:100%; width:33%; background:linear-gradient(90deg,var(--accent2),var(--accent)); }
+.findings { margin-top:1rem; }
+.finding { border-left:3px solid var(--danger); padding:0.6rem 0.9rem; margin:0.6rem 0; background:#140f18; border-radius:0 10px 10px 0; }
+.finding.med { border-left-color:#fbbf24; }
+.footer { margin-top:3rem; color:var(--muted); font-size:0.9rem; border-top:1px solid #1c2238; padding-top:1.25rem; }
+code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">RepoTruth</div>
+      <div>
+        <a href="https://github.com/dl88jing/repotruth">GitHub</a>
+        ·
+        <a href="https://huggingface.co/spaces/mr-dee/repotruth">HF Space</a>
+      </div>
+    </div>
+
+    <div class="badges">
+      <span class="badge hot">Build with Beam</span>
+      <span class="badge">Reflection Beam 501B-A23B</span>
+      <span class="badge">1M context</span>
+      <span class="badge">Green Robin Labs</span>
+    </div>
+
+    <h1>Catch documentation<br/>that lies.</h1>
+    <p class="lead">
+      RepoTruth packs an entire repository into <strong>one Beam call</strong>, finds places where the docs contradict the code,
+      and shows a live <strong>token thrift meter</strong> — Beam’s ~3× leaner reasoning, made visible.
+    </p>
+
+    <div class="cta">
+      <a class="btn primary" href="https://huggingface.co/spaces/mr-dee/repotruth">Open the live Space →</a>
+      <a class="btn ghost" href="https://github.com/dl88jing/repotruth">View source</a>
+      <a class="btn ghost" href="https://huggingface.co/datasets/mr-dee/repotruth-findings">Findings dataset</a>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Whole-repo, one shot</h3>
+        <p>Uses Beam’s 1M-token context to read README, docs, and source together — the gap no thin chat demo covers.</p>
+      </div>
+      <div class="card">
+        <h3>Severity-ranked lies</h3>
+        <p>Wrong flags, wrong defaults, wrong exit codes, middleware order — with file citations and suggested patches.</p>
+      </div>
+      <div class="card">
+        <h3>Token thrift meter</h3>
+        <p>Prompt / reasoning / completion tokens and reasoning_effort — Beam’s headline efficiency, not a slide claim.</p>
+      </div>
+    </div>
+
+    <div class="meter">
+      <div>fixture · tinyclick · effort=medium · backend=beam</div>
+      <div style="margin-top:0.6rem;color:#9aa3b8">reasoning tokens vs 3× baseline</div>
+      <div class="bar"><span></span></div>
+      <div>410 reasoning · baseline ~1,230 · <span style="color:var(--ok)">~67% leaner</span></div>
+      <div class="findings">
+        <div class="finding"><strong>[HIGH]</strong> Docs say <code>--count</code>, code implements <code>--times</code></div>
+        <div class="finding med"><strong>[MEDIUM]</strong> Docs claim globs / <code>--recursive</code> that do not exist</div>
+        <div class="finding"><strong>[HIGH]</strong> Missing-file exit code is <code>2</code>, docs say <code>0</code></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Built by <strong>Green Robin Labs</strong> for the Hugging Face × Reflection
+      <a href="https://huggingface.co/reflection/Beam-1.0-501B-A23B/discussions/5">Build with Beam</a> challenge.
+      Model: <code>reflection/Beam-1.0-501B-A23B</code>. Apache-2.0.
+    </div>
+  </div>
+</body>
+</html>
