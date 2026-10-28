@@ -1,30 +1,38 @@
 # Getting a Beam API key
 
-No Reflection/Beam key was present in this environment. Use one of:
+No Reflection/Beam key was found in env, `~/.config`, or `/workspace`.
 
-## Option A — Reflection platform (recommended)
+## Option A — Reflection platform (recommended, free beta)
 
-1. Go to https://platform.reflection.ai (or https://reflection.ai and open Platform).
-2. Sign up / sign in.
-3. Create an API key.
-4. Export:
+1. Sign up at **https://platform.reflection.ai** (public beta — free to start; daily input/output allocations reset 12:00 AM PT).
+2. Open **API Keys**, create a key (shown once).
+3. Docs: https://developers.reflection.ai/quickstart
+4. Export and run:
    ```bash
-   export REFLECTION_API_KEY=sk-...
+   export REFLECTION_API_KEY='<key>'
    export REPOTRUTH_BACKEND=reflection
+   python scripts/repotruth_cli.py fixtures/tinyclick
    ```
-5. Base URL used by RepoTruth: `https://api.reflection.ai/openai/v1`
-6. Model id: `Beam-1.0-501B-A23B` (or `reflection/Beam-1.0-501B-A23B` depending on the endpoint).
+5. Endpoint: `https://api.reflection.ai/openai/v1`  
+   Model: `Beam-1.0-501B-A23B`
+
+```bash
+curl https://api.reflection.ai/openai/v1/chat/completions \
+  -H "Authorization: Bearer $REFLECTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"Beam-1.0-501B-A23B","messages":[{"role":"user","content":"ping"}]}'
+```
 
 ## Option B — Hugging Face Inference Providers
 
-1. Create a fine-grained HF token at https://huggingface.co/settings/tokens with **Inference Providers** / Make calls to Inference Providers permission.
-2. Ensure the token’s user has access to Beam via Inference Providers (may require accepting provider terms on the model page).
+1. Create a fine-grained token at https://huggingface.co/settings/tokens with **Make calls to Inference Providers**.
+2. Accept any provider terms on https://huggingface.co/reflection/Beam-1.0-501B-A23B if prompted.
 3. Export:
    ```bash
    export HF_TOKEN=hf_...
    export REPOTRUTH_BACKEND=hf
    ```
-4. Note: the current `mr-dee` write token returned *insufficient permissions for Inference Providers* — mint a new token with that scope, or use a different account that has it.
+4. The current `mr-dee` write token returned *insufficient permissions for Inference Providers* — mint a new token with that scope.
 
 ## Option C — Mock / fixtures (no key)
 
@@ -33,6 +41,6 @@ export REPOTRUTH_BACKEND=mock
 python scripts/repotruth_cli.py fixtures/tinyclick
 ```
 
-## Gradio Space hosting note
+## Gradio Space hosting
 
-Creating a new **Gradio** Space on free CPU now returns HTTP 402 (HF PRO required). RepoTruth ships as a free **Static** Space with interactive fixtures; the Gradio app lives in `space/` and runs locally or on a PRO account / Modal / other host.
+New Gradio Spaces on free CPU return **HTTP 402** (HF PRO). RepoTruth is published as a free **Static** Space with interactive fixtures. The Gradio app in `space/` runs locally or on HF PRO / Modal / another host. After PRO or a host is available, set Space secrets `REFLECTION_API_KEY` or `HF_TOKEN`.
