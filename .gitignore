@@ -17,3 +17,9 @@ renders/
 .gitleaks.toml.bak
 secrets/
 local.config.json
+video/assets/vo*.wav
+video/assets/narration.wav
+video/node_modules/
+video/.hyperframes/
+*.env
+.env

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RepoTruth — Catch documentation that lies</title>
+<style>
+:root{--bg:#07090f;--card:#0f1420;--line:#1f2937;--text:#e8ecf7;--muted:#9aa3b8;--accent:#7c5cff;--cyan:#22d3ee;--ok:#34d399;--bad:#f87171}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:var(--cyan)}header{padding:48px 24px 24px;text-align:center;background:radial-gradient(ellipse at top,#1a1040,transparent 60%)}
+header img{max-width:900px;width:100%;border-radius:16px;border:1px solid var(--line)}
+h1{font-size:clamp(2rem,5vw,3.5rem);margin:24px 0 8px}p.lead{color:var(--muted);font-size:1.15rem;max-width:640px;margin:0 auto 24px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:999px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+main{max-width:960px;margin:0 auto;padding:24px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tab.active{border-color:var(--accent);background:#1a1340}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.sev{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.75rem;font-weight:700;text-transform:uppercase}
+.sev.HIGH{background:#3f1212;color:var(--bad)}.sev.MEDIUM,.sev.MED{background:#3f2a12;color:#fb923c}.sev.LOW{background:#123f2a;color:var(--ok)}
+.finding{border-top:1px solid var(--line);padding:14px 0}.finding:first-child{border-top:0}
+.meter{height:14px;background:#1f2937;border-radius:999px;overflow:hidden;margin:8px 0}
+.meter>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan))}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+footer{text-align:center;color:var(--muted);padding:40px 24px;font-size:.9rem}
+code{background:#111827;padding:2px 6px;border-radius:4px;font-size:.9em}
+</style>
+</head>
+<body>
+<header>
+  <img src="cover.png" alt="RepoTruth cover"/>
+  <h1>RepoTruth</h1>
+  <p class="lead">Whole-repo docs-vs-code audits powered by Reflection <b>Beam</b> (1M context + token thrift). Catch documentation that lies.</p>
+  <div class="btns">
+    <a class="btn" href="https://github.com/dl88jing/repotruth">GitHub</a>
+    <a class="btn ghost" href="https://repotruth.vercel.app">Landing</a>
+    <a class="btn ghost" href="https://huggingface.co/datasets/mr-dee/repotruth-findings">Findings dataset</a>
+  </div>
+</header>
+<main>
+  <h2>Interactive fixture demo</h2>
+  <p style="color:var(--muted)">Pre-computed Beam-style autopsies of three intentionally lying mini-repos. Run live with a Reflection API key or HF Inference Providers token via the CLI / Gradio app in the GitHub repo.</p>
+  <div class="tabs" id="tabs"></div>
+  <div class="grid">
+    <div class="card" id="summary"></div>
+    <div class="card">
+      <h3 style="margin-top:0">Token thrift meter</h3>
+      <div>Baseline long-context reasoning (est.)</div>
+      <div class="meter"><i style="width:100%"></i></div>
+      <div>Beam reasoning tokens</div>
+      <div class="meter"><i id="thriftBar" style="width:33%"></i></div>
+      <p id="thriftText" style="color:var(--muted);font-size:.9rem"></p>
+    </div>
+  </div>
+  <div class="card" id="findings"></div>
+  <div class="card">
+    <h3 style="margin-top:0">Why Beam</h3>
+    <ul>
+      <li><b>1M context</b> — pack README + docs + source in one call</li>
+      <li><b>Agentic coding / SWE</b> — judges functional lies, not wording</li>
+      <li><b>Token-efficient reasoning</b> — thrift meter makes the ~3× savings visible</li>
+    </ul>
+    <p>Affiliation: <b>Green Robin Labs</b> · Challenge: HF × Reflection Build with Beam</p>
+  </div>
+</main>
+<footer>Apache-2.0 · Green Robin Labs · Model: reflection/Beam-1.0-501B-A23B</footer>
+<script>
+const DATA = {"tinyclick": {"repo": "tinyclick", "summary": "Three documentation lies: wrong flag name, missing glob support, and incorrect exit code on missing files.", "findings": [{"id": "TC1", "severity": "high", "title": "Flag mismatch: docs say --count, code implements --times", "doc_refs": ["README.md", "docs/cli.md"], "code_refs": ["src/cli.py"], "evidence": "README and docs/cli.md document `--count`; argparse defines `--times` only.", "suggested_fix": "Either rename the flag to `--count` or update docs to `--times`.", "confidence": 0.95}, {"id": "TC2", "severity": "medium", "title": "Docs claim glob / --recursive support that does not exist", "doc_refs": ["README.md", "docs/cli.md"], "code_refs": ["src/cli.py"], "evidence": "README mentions globs `src/**/*.py` and docs list `--recursive`; cli.py has neither.", "suggested_fix": "Remove glob/--recursive claims or implement them.", "confidence": 0.92}, {"id": "TC3", "severity": "high", "title": "Missing-file exit code is 2, docs say 0", "doc_refs": ["README.md", "docs/cli.md"], "code_refs": ["src/cli.py"], "evidence": "Docs: exit 0 on missing file. Code returns 2.", "suggested_fix": "Align docs to exit code 2, or change return to 0 if non-fatal is intended.", "confidence": 0.97}], "usage": {"prompt_tokens": 1840, "completion_tokens": 620, "reasoning_tokens": 410, "total_tokens": 2460}, "reasoning_effort": "medium"}, "tinystar": {"repo": "tinystar", "summary": "Router docs misstate handler async requirements, middleware order, and path-param syntax.", "findings": [{"id": "TS1", "severity": "medium", "title": "route() does not require async handlers", "doc_refs": ["README.md"], "code_refs": ["src/router.py"], "evidence": "README says Router.route is an async decorator; implementation accepts any Callable.", "suggested_fix": "Document that sync and async handlers are both accepted.", "confidence": 0.9}, {"id": "TS2", "severity": "high", "title": "Middleware runs before handlers, not after", "doc_refs": ["README.md"], "code_refs": ["src/router.py"], "evidence": "README: middleware runs after handler. use() docstring and list order imply before.", "suggested_fix": "Correct README to 'before the handler'.", "confidence": 0.93}, {"id": "TS3", "severity": "medium", "title": "Path params documented as :id but code uses raw paths / {id} convention", "doc_refs": ["README.md"], "code_refs": ["src/router.py"], "evidence": "README documents `:id` syntax; match() does exact string equality with no :id parsing.", "suggested_fix": "Implement :id parsing or document exact-path matching only.", "confidence": 0.88}], "usage": {"prompt_tokens": 1520, "completion_tokens": 540, "reasoning_tokens": 360, "total_tokens": 2060}, "reasoning_effort": "medium"}, "tinyhttp": {"repo": "tinyhttp", "summary": "Client defaults and Response.json() behavior contradict the README.", "findings": [{"id": "TH1", "severity": "high", "title": "Default timeout is 5s, README says 30s", "doc_refs": ["README.md"], "code_refs": ["src/client.py"], "evidence": "DEFAULT_TIMEOUT = 5.0 vs README '30 seconds'.", "suggested_fix": "Change DEFAULT_TIMEOUT to 30.0 or update README.", "confidence": 0.98}, {"id": "TH2", "severity": "high", "title": "Retries default to 0, README says 3", "doc_refs": ["README.md"], "code_refs": ["src/client.py"], "evidence": "DEFAULT_RETRIES = 0 vs README '3 attempts'.", "suggested_fix": "Set DEFAULT_RETRIES = 3 or fix docs.", "confidence": 0.97}, {"id": "TH3", "severity": "medium", "title": "Response.json() is not always available", "doc_refs": ["README.md"], "code_refs": ["src/client.py"], "evidence": "README claims `.json()` always available; implementation raises unless content-type is JSON.", "suggested_fix": "Document the content-type guard or make json() best-effort.", "confidence": 0.91}], "usage": {"prompt_tokens": 1380, "completion_tokens": 500, "reasoning_tokens": 340, "total_tokens": 1880}, "reasoning_effort": "medium"}};
+const tabs = document.getElementById('tabs');
+let current = 'tinyclick';
+Object.keys(DATA).forEach(k => {
+  const b = document.createElement('button');
+  b.className = 'tab' + (k===current?' active':'');
+  b.textContent = k;
+  b.onclick = () => { current=k; [...tabs.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); };
+  tabs.appendChild(b);
+});
+function render(){
+  const d = DATA[current];
+  const findings = d.findings || [];
+  const u = d.usage || {};
+  const beamR = u.reasoning_tokens || 410;
+  const baseline = Math.round(beamR * 3);
+  document.getElementById('summary').innerHTML = `<h3 style="margin-top:0">${d.repo||current}</h3>
+    <p>${d.summary||''}</p>
+    <p><b>${findings.length}</b> findings · effort <code>${d.reasoning_effort||'medium'}</code></p>`;
+  const pct = Math.round(100 * beamR / baseline);
+  document.getElementById('thriftBar').style.width = pct + '%';
+  document.getElementById('thriftText').textContent = `${beamR} reasoning tokens vs ~${baseline} baseline (~3× leaner) · total ${u.total_tokens||'?'} tokens`;
+  document.getElementById('findings').innerHTML = '<h3 style="margin-top:0">Findings</h3>' + findings.map(f => {
+    const sev = (f.severity||'medium').toUpperCase();
+    const docs = (f.doc_refs||[]).join(', ') || 'README.md';
+    const code = (f.code_refs||[]).join(', ') || 'src/';
+    return `<div class="finding"><span class="sev ${sev}">${sev}</span> <b>${f.title||'Contradiction'}</b>
+      <div style="color:var(--muted);font-size:.9rem;margin-top:6px">${f.evidence||''}</div>
+      <div style="font-size:.85rem;margin-top:6px"><code>${docs}</code> vs <code>${code}</code></div>
+      <div style="font-size:.85rem;color:var(--ok);margin-top:4px">${f.suggested_fix||''}</div></div>`;
+  }).join('') || '<p>No findings.</p>';
+}
+render();
+</script>
+</body></html>

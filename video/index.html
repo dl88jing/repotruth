@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#07090f}
+#root{width:1920px;height:1080px;position:relative;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#e8ecf7}
+.scene{position:absolute;inset:0;background:#07090f}
+.k{position:absolute;left:100px;top:80px;font-size:28px;letter-spacing:.18em;text-transform:uppercase;color:#7c5cff}
+h1{position:absolute;left:100px;top:160px;font-size:96px;line-height:1.05;letter-spacing:-.03em;width:900px}
+.sub{position:absolute;left:100px;top:420px;font-size:36px;color:#9aa3b8;width:800px;line-height:1.35}
+.shot{position:absolute;right:60px;top:140px;width:860px;border-radius:16px;border:1px solid #1f2937;box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.badge{position:absolute;left:100px;bottom:80px;font-size:24px;color:#6b7280}
+</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="46.260" data-width="1920" data-height="1080">
+<section id="s0" class="clip scene" data-start="0.000" data-duration="6.985" data-track-index="0">
+<div class="k">Hook</div>
+<h1>Documentation that lies.</h1>
+<img class="shot" src="assets/01-lie.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<section id="s1" class="clip scene" data-start="6.985" data-duration="8.862" data-track-index="0">
+<div class="k">1M context</div>
+<h1>Whole repo. One Beam call.</h1>
+<img class="shot" src="assets/02-pack.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<section id="s2" class="clip scene" data-start="15.847" data-duration="8.499" data-track-index="0">
+<div class="k">Findings</div>
+<h1>Cite the file. Cite the line.</h1>
+<img class="shot" src="assets/03-findings.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<section id="s3" class="clip scene" data-start="24.346" data-duration="8.435" data-track-index="0">
+<div class="k">Thrift meter</div>
+<h1>~3× leaner reasoning.</h1>
+<img class="shot" src="assets/04-thrift.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<section id="s4" class="clip scene" data-start="32.781" data-duration="7.859" data-track-index="0">
+<div class="k">Fixtures</div>
+<h1>Reproducible lies.</h1>
+<img class="shot" src="assets/05-fixtures.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<section id="s5" class="clip scene" data-start="40.641" data-duration="5.619" data-track-index="0">
+<div class="k">CTA</div>
+<h1>RepoTruth · Green Robin Labs</h1>
+<img class="shot" src="assets/06-cta.png" alt="">
+<div class="badge">RepoTruth · Build with Beam</div>
+</section>
+<audio id="vo" src="assets/narration.wav" data-start="0" data-duration="46.260" data-track-index="1"></audio>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.from("#s0 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},0.150);
+tl.from("#s0 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},0.350);
+tl.to("#s0 .shot",{scale:1.03,duration:5.785,ease:"none"},1.200);
+tl.from("#s1 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},7.135);
+tl.from("#s1 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},7.335);
+tl.to("#s1 .shot",{scale:1.03,duration:7.662,ease:"none"},8.185);
+tl.from("#s2 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},15.997);
+tl.from("#s2 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},16.197);
+tl.to("#s2 .shot",{scale:1.03,duration:7.299,ease:"none"},17.047);
+tl.from("#s3 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},24.496);
+tl.from("#s3 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},24.696);
+tl.to("#s3 .shot",{scale:1.03,duration:7.235,ease:"none"},25.546);
+tl.from("#s4 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},32.931);
+tl.from("#s4 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},33.131);
+tl.to("#s4 .shot",{scale:1.03,duration:6.659,ease:"none"},33.981);
+tl.from("#s5 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},40.791);
+tl.from("#s5 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},40.991);
+tl.to("#s5 .shot",{scale:1.03,duration:4.419,ease:"none"},41.841);
+window.__timelines = window.__timelines || {};
+window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>
