@@ -8,12 +8,12 @@
 
 | | |
 |--|--|
-| **Live Space** | https://huggingface.co/spaces/mr-dee/repotruth |
+| **Live Space** (static interactive fixtures; Gradio needs HF PRO) | https://huggingface.co/spaces/mr-dee/repotruth |
 | **GitHub** | https://github.com/dl88jing/repotruth |
 | **Landing** | https://repotruth.vercel.app |
 | **Findings dataset** | https://huggingface.co/datasets/mr-dee/repotruth-findings |
-| **Demo video** | (attach `video/renders/repotruth-demo.mp4` or host URL) |
-| **Deck** | (attach `deck/RepoTruth-Build-with-Beam.pptx`) |
+| **Demo video** | https://github.com/dl88jing/repotruth/blob/master/video/renders/repotruth-demo.mp4 (also local `/workspace/beam-hack/video/renders/repotruth-demo.mp4`) |
+| **Deck** | https://github.com/dl88jing/repotruth/blob/master/deck/RepoTruth-Build-with-Beam.pptx (also `/workspace/beam-hack/deck/RepoTruth-Build-with-Beam.pptx`) |
 
 ## One-liner
 
