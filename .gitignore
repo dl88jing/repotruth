@@ -10,8 +10,6 @@ node_modules/
 .next/
 .vercel/
 dist/
-renders/
-*.mp4
 !assets/*.png
 .DS_Store
 .gitleaks.toml.bak
@@ -22,4 +20,5 @@ video/assets/narration.wav
 video/node_modules/
 video/.hyperframes/
 *.env
-.env
+
+# Keep demo video tracked; ignore HyperFrames workdirs
