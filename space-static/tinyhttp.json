@@ -1,55 +1,64 @@
 {
   "repo": "tinyhttp",
-  "summary": "Client defaults and Response.json() behavior contradict the README.",
+  "summary": "README documents defaults and Response.json() behavior that contradict src/client.py.",
   "findings": [
     {
-      "id": "TH1",
+      "id": "default-timeout-mismatch",
       "severity": "high",
-      "title": "Default timeout is 5s, README says 30s",
+      "title": "README says default timeout is 30 seconds, but code defaults to 5 seconds",
       "doc_refs": [
-        "README.md"
+        "README.md: 'Default timeout is **30 seconds**.'"
       ],
       "code_refs": [
-        "src/client.py"
+        "src/client.py: DEFAULT_TIMEOUT = 5.0"
       ],
-      "evidence": "DEFAULT_TIMEOUT = 5.0 vs README '30 seconds'.",
-      "suggested_fix": "Change DEFAULT_TIMEOUT to 30.0 or update README.",
-      "confidence": 0.98
+      "evidence": "The README states a 30-second default timeout, while DEFAULT_TIMEOUT is 5.0 and Client.__init__ uses it as the default.",
+      "suggested_fix": "Update either the README or DEFAULT_TIMEOUT so the documented and implemented default timeout match.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     },
     {
-      "id": "TH2",
+      "id": "default-retries-mismatch",
       "severity": "high",
-      "title": "Retries default to 0, README says 3",
+      "title": "README says retries are enabled by default with 3 attempts, but code defaults to 0",
       "doc_refs": [
-        "README.md"
+        "README.md: 'Retries are enabled by default (3 attempts).'"
       ],
       "code_refs": [
-        "src/client.py"
+        "src/client.py: DEFAULT_RETRIES = 0"
       ],
-      "evidence": "DEFAULT_RETRIES = 0 vs README '3 attempts'.",
-      "suggested_fix": "Set DEFAULT_RETRIES = 3 or fix docs.",
-      "confidence": 0.97
+      "evidence": "The README promises 3 retry attempts by default, while DEFAULT_RETRIES is 0 and Client.__init__ uses it as the default.",
+      "suggested_fix": "Update either the README or DEFAULT_RETRIES so the documented and implemented default retry count match.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     },
     {
-      "id": "TH3",
-      "severity": "medium",
-      "title": "Response.json() is not always available",
+      "id": "json-always-available-mismatch",
+      "severity": "high",
+      "title": "README says Response.json() is always available, but code raises for non-JSON content",
       "doc_refs": [
-        "README.md"
+        "README.md: '`Client.request` returns a `Response` with `.json()` always available.'"
       ],
       "code_refs": [
-        "src/client.py"
+        "src/client.py: Response.json() raises ValueError when content-type is not application/json"
       ],
-      "evidence": "README claims `.json()` always available; implementation raises unless content-type is JSON.",
-      "suggested_fix": "Document the content-type guard or make json() best-effort.",
-      "confidence": 0.91
+      "evidence": "The README claims .json() is always available, but the implementation only parses JSON when the content-type header contains application/json and otherwise raises ValueError.",
+      "suggested_fix": "Change the README to state that .json() requires JSON content, or change Response.json() to always attempt parsing.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     }
   ],
   "usage": {
-    "prompt_tokens": 1380,
-    "completion_tokens": 500,
-    "reasoning_tokens": 340,
-    "total_tokens": 1880
+    "prompt_tokens": 673,
+    "completion_tokens": 887,
+    "reasoning_tokens": 353,
+    "total_tokens": 1560
   },
-  "reasoning_effort": "medium"
+  "reasoning_effort": "medium",
+  "latency_s": 3.92,
+  "model": "Beam-1.0-501B-A23B",
+  "source": "live-beam"
 }

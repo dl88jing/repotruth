@@ -1,29 +1,26 @@
-# Live Beam eval (measured)
+# Live Beam evaluation log
 
-Checked **2026-10-31 ~4:05 PM PT** against Reflection API (`Beam-1.0-501B-A23B`, `reasoning_effort=medium`) on fixture `tinyclick`.
+Checked **Oct 31, 2026 PT**. Model: `Beam-1.0-501B-A23B` via `https://api.reflection.ai/openai/v1`.
 
-| Metric | Value |
-|--------|------:|
-| Prompt tokens | 813 |
-| Reasoning tokens | 370 |
-| Completion tokens | 947 |
-| Total tokens | 1760 |
-| Findings | 3 |
+## tinyclick effort sweep
 
-Summary from Beam: Documentation advertises flags and behaviors that the CLI does not implement: --count is actually --times, --recursive/glob support is absent, and missing files exit 2 instead of the documented 0.
+| effort | prompt | reasoning | completion | total | latency_s | findings |
+|--------|-------:|----------:|-----------:|------:|----------:|---------:|
+| low | 813 | 246 | 703 | ~1516 | 4.29 | 3 |
+| medium | 813 | 572 | 1157 | 1970 | 7.22 | 3 |
+| high | 813 | 580 | 1079 | ~1892 | 7.09 | 3 |
 
-Findings:
-- **HIGH** Documented --count flag does not exist; implementation uses --times
-- **HIGH** Documented --recursive flag and glob support are not implemented
-- **HIGH** Missing file exits with code 2, but documentation says code 0
+Δ reasoning low vs medium: **−57%**.
 
-Repro:
+## Real repos (verified TPs kept)
 
-```bash
-export REFLECTION_API_KEY=...
-REPOTRUTH_BACKEND=reflection ./demo.sh
-# or: curl -s 'https://repotruth.vercel.app/api/health'
-#     curl -s -X POST https://repotruth.vercel.app/api/audit -H 'content-type: application/json' -d '{"fixture":"tinyclick"}'
+See `docs/audits/real_*.json` and dataset `mr-dee/repotruth-findings`.
+
+## Live auditor smoke test
+
 ```
-
-Public Space remains fixture-seeded (Static SDK). Landing `/api/audit` is live when the Vercel secret is present, with labeled fixture fallback on provider errors.
+GET  https://repotruth.vercel.app/api/health → reflection_key_present:true, github_audit:true
+POST /api/audit {fixture:tinyclick,effort:low} → live:true, 3 findings
+POST /api/audit {github:https://github.com/pallets/itsdangerous,effort:low}
+  → live:true, mode:github, prompt≈36k, reasoning≈975, ~10.7s, findings≥1
+```

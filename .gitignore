@@ -22,3 +22,7 @@ video/.hyperframes/
 *.env
 
 # Keep demo video tracked; ignore HyperFrames workdirs
+
+.reflection_api_key
+.hf_inference_token
+live_results/

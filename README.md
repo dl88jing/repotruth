@@ -6,137 +6,106 @@
 
 **Catch documentation that lies.**
 
-RepoTruth packs an entire repository into **one [Beam](https://huggingface.co/reflection/Beam-1.0-501B-A23B) call**, finds places where the docs contradict the code, and shows a **token thrift meter** so Beam’s efficiency claim is visible per audit.
+RepoTruth packs an entire repository into **one [Beam](https://huggingface.co/reflection/Beam-1.0-501B-A23B) call**, finds places where the docs contradict the code, and shows a **measured token thrift meter**.
 
 Built by **Green Robin Labs** for the Hugging Face × Reflection [Build with Beam](https://huggingface.co/reflection/Beam-1.0-501B-A23B/discussions/5) challenge ($20K).
 
 [![CI](https://github.com/dl88jing/repotruth/actions/workflows/ci.yml/badge.svg)](https://github.com/dl88jing/repotruth/actions/workflows/ci.yml)
 
-| Artifact | Link | Status (checked Oct 31, 2026 PT) |
-|----------|------|----------------------------------|
-| Live Space (static interactive fixtures) | https://huggingface.co/spaces/mr-dee/repotruth | HTTP 200, static SDK |
-| Landing | https://repotruth.vercel.app | HTTP 200 |
-| Findings dataset | https://huggingface.co/datasets/mr-dee/repotruth-findings | HTTP 200 |
-| Demo video | [repotruth-demo.mp4](video/renders/repotruth-demo.mp4) | In-repo |
-| Deck | [RepoTruth-Build-with-Beam.pptx](deck/RepoTruth-Build-with-Beam.pptx) | In-repo |
-| Model | `Beam-1.0-501B-A23B` via Reflection API or HF Inference Providers | Live calls need `REFLECTION_API_KEY` or `HF_TOKEN` |
+| Artifact | Link |
+|----------|------|
+| **Live auditor (judges)** | https://repotruth.vercel.app/#auditor |
+| HF Space (measured results) | https://huggingface.co/spaces/mr-dee/repotruth |
+| Findings dataset | https://huggingface.co/datasets/mr-dee/repotruth-findings |
+| Demo video | [repotruth-demo.mp4](video/renders/repotruth-demo.mp4) |
+| Deck | [RepoTruth-Build-with-Beam.pptx](deck/RepoTruth-Build-with-Beam.pptx) |
+| Model | `Beam-1.0-501B-A23B` via Reflection OpenAI-compatible API |
 
-> **Honest status (checked Oct 31, 2026 ~4:05 PM PT):**
-> - **Live Beam works** via Reflection API. Measured on `tinyclick` (`reasoning_effort=medium`): prompt **813**, reasoning **370**, completion **947**, total **1760** tokens → **3 findings**. Details: [`docs/live-eval.md`](docs/live-eval.md).
-> - **Landing** (`https://repotruth.vercel.app`) exposes `/api/health` + `/api/audit` with the Vercel `REFLECTION_API_KEY` secret; provider failures fall back to fixtures with a visible banner.
-> - **HF Space** remains a free **Static** interactive fixture demo (Gradio free CPU returns HTTP 402).
-> - Fixture thrift numbers in the Static Space are seeded, not live measurements.
-
-## For judges
-
-Verifiable commands (PT times):
+## For judges (Oct 31, 2026 PT)
 
 ```bash
-# 1) Offline fixture demo + tests (no key)
+# Health — should show reflection_key_present:true + github_audit:true
+curl -s https://repotruth.vercel.app/api/health | jq .
+
+# Live fixture audit
+curl -s -X POST https://repotruth.vercel.app/api/audit \
+  -H 'content-type: application/json' \
+  -d '{"fixture":"tinyclick","effort":"low"}' \
+  | jq '{live, usage:.result.usage, n:(.result.parsed.findings|length), summary:.result.parsed.summary}'
+
+# Live public GitHub audit (rate-limited: ~5/IP/hour, ~150/day; zip≤2.5MB, ≤120 files, ≤280k chars)
+curl -s -X POST https://repotruth.vercel.app/api/audit \
+  -H 'content-type: application/json' \
+  -d '{"github":"https://github.com/pallets/itsdangerous","effort":"low"}' \
+  | jq '{live, mode, usage:.result.usage, n:(.result.parsed.findings|length), summary:.result.parsed.summary}'
+```
+
+Offline fixture demo (no key):
+
+```bash
 git clone https://github.com/dl88jing/repotruth && cd repotruth
 ./demo.sh
 python3 -m pytest -q   # after: pip install -r requirements-dev.txt
-
-# 2) Live health + audit on the deployed app (uses Vercel Reflection secret)
-curl -s https://repotruth.vercel.app/api/health | jq .
-curl -s -X POST https://repotruth.vercel.app/api/audit \
-  -H 'content-type: application/json' \
-  -d '{"fixture":"tinyclick","effort":"medium"}' | jq '{live, usage:.result.usage, n_findings:(.result.parsed.findings|length), summary:.result.parsed.summary}'
-
-# 3) CLI live (your own key)
-export REFLECTION_API_KEY=...   # https://platform.reflection.ai
-REPOTRUTH_BACKEND=reflection ./demo.sh
 ```
 
-Measured live CLI run (Oct 31, 2026 ~4:05 PM PT): tinyclick → prompt 813 / reasoning 370 / completion 947 / total 1760 · 3 findings. See [`docs/live-eval.md`](docs/live-eval.md).
+## Measured results (live Beam, Oct 31, 2026 PT)
 
-Links: [Space](https://huggingface.co/spaces/mr-dee/repotruth) · [Landing](https://repotruth.vercel.app) · [Dataset](https://huggingface.co/datasets/mr-dee/repotruth-findings) · [Submission](https://huggingface.co/reflection/Beam-1.0-501B-A23B/discussions/5)
+### Effort sweep — tinyclick (same 3 findings every time)
+
+| effort | reasoning_tokens | completion_tokens | latency_s |
+|--------|-----------------:|------------------:|----------:|
+| low    | 246 | 703 | 4.29 |
+| medium | 572 | 1157 | 7.22 |
+| high   | 580 | 1079 | 7.09 |
+
+**Claim:** `reasoning_effort=low` used **57% fewer** reasoning tokens than `medium` for identical verified findings. We do **not** invent a cross-model ~3× figure from this run.
+
+### Real open-source repos (verified true positives only)
+
+| repo | verified | prompt | reasoning | latency_s |
+|------|---------:|-------:|----------:|----------:|
+| encode/httpcore | 5 | 56,742 | 4,292 | 36.53 |
+| pallets/itsdangerous | 1 | 40,291 | 2,859 | 20.99 |
+| psf/requests | 1 | 62,572 | 2,967 | 24.46 |
+| Kludex/starlette | 1 | 76,850 | 2,252 | 21.37 |
+| pallets/click | 0 | 70,244 | 2,943 | 25.35 |
+
+Featured httpcore highs (re-read in source before keeping):
+
+- Docs call `proxy.request(...)`; `httpcore.Proxy` has no `request` (use `ConnectionPool`)
+- Docs show `Request(...).headers` already has Host; constructor leaves headers empty
+- TOC lists `httpcore.backends.asyncio.AsyncioBackend` — module does not exist (`AnyIOBackend`)
+
+Full JSON: [`docs/audits/`](docs/audits/) and the Hub [dataset](https://huggingface.co/datasets/mr-dee/repotruth-findings).
 
 ## Why this shows off Beam
 
 | Beam strength | How RepoTruth uses it |
 |---------------|------------------------|
-| **1M context** | Packs README + docs + source into a single audit prompt |
-| **Agentic coding / SWE** | Judges functional lies (flags, defaults, exit codes, control flow) with file citations |
-| **Token-efficient reasoning** | Thrift meter + `reasoning_effort` control; Reflection’s public ~3× claim is shown as an illustrative baseline, live usage when a key is present |
+| **1M context** | Packs README + docs + source into a single audit prompt (56k–77k prompt tokens measured on real repos) |
+| **Agentic coding / SWE** | Judges functional lies with file citations we re-verified |
+| **Token-efficient reasoning** | Controllable `reasoning_effort`; measured −57% reasoning tokens low vs medium on tinyclick |
 
 ## Architecture
 
 ```
-┌──────────────┐     pack_directory      ┌─────────────────┐
-│ repo / zip / │ ───────────────────────▶│ PackedRepo      │
-│ fixture      │   docs first, then code │ (token estimate)│
-└──────────────┘                         └────────┬────────┘
-                                                  │ build_messages
-                                                  ▼
-                                         ┌─────────────────┐
-                                         │ Beam chat       │
-                                         │ completions     │
-                                         │ (reflection|hf) │
-                                         └────────┬────────┘
-                                                  │ JSON findings
-                     on error ──▶ fixture mock    ▼
-                                         ┌─────────────────┐
-                                         │ Autopsy cards + │
-                                         │ thrift meter    │
-                                         └─────────────────┘
+repo / GitHub zipball ──pack──▶ PackedRepo ──messages──▶ Beam chat.completions
+                                                         model: Beam-1.0-501B-A23B
+                                                         │
+                                                         ▼
+                                              JSON findings + usage
+                                              (reasoning_tokens from
+                                               completion_tokens_details)
 ```
 
-| Module | Role |
-|--------|------|
-| `app/repotruth/packer.py` | Walk repo, rank docs before code, budget into one prompt |
-| `app/repotruth/client.py` | Reflection / HF / mock backends; labeled provider fallback |
-| `app/repotruth/render.py` | Findings + thrift markdown |
-| `scripts/repotruth_cli.py` | One-command CLI |
-| `space/` | Gradio app (needs HF PRO or local host; free Static Space uses `space-static/`) |
-| `fixtures/` | Intentionally lying mini-repos + expected JSON |
-| `dataset/` | Seed JSONL published as `mr-dee/repotruth-findings` |
+- **Vercel** (`landing/`): `/api/health`, `/api/audit` — fixtures + public GitHub URLs; `REFLECTION_API_KEY` server-side only
+- **Static HF Space** (`space-static/`): measured results + link to live auditor (Gradio free CPU returns HTTP 402)
+- **CLI** (`scripts/repotruth_cli.py`): local audits with your own key
 
-## Quick start
+## Model name note
 
-```bash
-# Fixture demo (no API key) — preferred for judges
-./demo.sh
+Use exactly `Beam-1.0-501B-A23B`. The `reflection/` Hub prefix fails with `model_not_found` on `https://api.reflection.ai/openai/v1`.
 
-# Reflection API
-export REFLECTION_API_KEY=...
-REPOTRUTH_BACKEND=reflection python3 scripts/repotruth_cli.py fixtures/tinyclick
+## Affiliation
 
-# HF Inference Providers (token needs Inference Providers permission)
-export HF_TOKEN=...
-REPOTRUTH_BACKEND=hf python3 scripts/repotruth_cli.py fixtures/tinyclick
-```
-
-Gradio locally:
-
-```bash
-cd space && pip install -r requirements.txt && python app.py
-```
-
-## Fixtures
-
-Intentionally lying mini-repos for demos and tests:
-
-| Fixture | Planted lies |
-|---------|----------------|
-| `tinyclick` | `--count` vs `--times`; claimed glob/`--recursive`; exit `0` vs `2` |
-| `tinystar` | async route claim; middleware order; `:id` path syntax |
-| `tinyhttp` | timeout/retries defaults; `.json()` always-available claim |
-
-## Rubric fit (Build with Beam — equal 25% each)
-
-- **Creativity** — visual autopsy of docs that lie, not a chat wrapper
-- **Technical execution** — packer, structured JSON schema, dual backends, fixture mode, tests + CI, labeled fallback
-- **Usefulness** — maintainers and coding agents burn hours on stale docs every week
-- **Use of Beam** — 1M context + SWE strength + thrift meter are first-class product surface
-
-## Limitations
-
-- Public Space is **static** (HF free Gradio Spaces return HTTP 402 without PRO). Interactive fixture demo only; live Beam is CLI/Gradio with a key.
-- Fixture thrift token counts are **seeded for UI demos**, not measured Beam runs.
-- Mock findings are hand-authored expected JSON so demos stay reproducible offline.
-- Provider fallback returns fixtures with a visible banner — never silent.
-
-## License
-
-Apache-2.0. Affiliation in public copy: **Green Robin Labs**. Hackathon identity: GitHub `dl88jing` / HF `mr-dee`.
+**Green Robin Labs.** Apache-2.0.

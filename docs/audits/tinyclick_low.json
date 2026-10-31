@@ -1,0 +1,130 @@
+{
+  "repo": "tinyclick",
+  "source": "fixture-live-beam",
+  "github": null,
+  "reasoning_effort": "low",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 4.29,
+  "usage": {
+    "prompt_tokens": 812,
+    "completion_tokens": 703,
+    "reasoning_tokens": 246,
+    "total_tokens": 1515
+  },
+  "pack": {
+    "files": 3,
+    "approx_tokens": 470,
+    "total_chars": 1880
+  },
+  "summary": "Documentation advertises flags and behaviors that the implementation does not provide or contradicts.",
+  "findings": [
+    {
+      "id": "flag-name-drift",
+      "severity": "high",
+      "title": "Docs advertise --count, but code implements --times",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README usage and docs/cli.md describe `--count`, while src/cli.py adds `--times` and checks `args.times`.",
+      "suggested_fix": "Rename the implemented flag to `--count` or update all documentation to `--times`.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "missing-file-exit-code",
+      "severity": "high",
+      "title": "Docs say missing files exit 0, but code exits 2",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README and docs/cli.md state exit code 0 for missing files, but src/cli.py returns 2 when `args.path` does not exist.",
+      "suggested_fix": "Make the implementation return 0 for missing files or update docs to state exit code 2.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "glob-recursive-unsupported",
+      "severity": "medium",
+      "title": "Docs claim glob and recursive support, but code does not implement it",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README says it supports globs like `src/**/*.py`, and docs/cli.md documents `--recursive`, but src/cli.py only accepts a single `Path` and has no glob expansion or recursive handling.",
+      "suggested_fix": "Implement glob/recursive expansion or remove those claims from the documentation.",
+      "confidence": 0.95,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    }
+  ],
+  "n_findings": 3,
+  "verified": null,
+  "verified_findings": [
+    {
+      "id": "flag-name-drift",
+      "severity": "high",
+      "title": "Docs advertise --count, but code implements --times",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README usage and docs/cli.md describe `--count`, while src/cli.py adds `--times` and checks `args.times`.",
+      "suggested_fix": "Rename the implemented flag to `--count` or update all documentation to `--times`.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "missing-file-exit-code",
+      "severity": "high",
+      "title": "Docs say missing files exit 0, but code exits 2",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README and docs/cli.md state exit code 0 for missing files, but src/cli.py returns 2 when `args.path` does not exist.",
+      "suggested_fix": "Make the implementation return 0 for missing files or update docs to state exit code 2.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "glob-recursive-unsupported",
+      "severity": "medium",
+      "title": "Docs claim glob and recursive support, but code does not implement it",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README says it supports globs like `src/**/*.py`, and docs/cli.md documents `--recursive`, but src/cli.py only accepts a single `Path` and has no glob expansion or recursive handling.",
+      "suggested_fix": "Implement glob/recursive expansion or remove those claims from the documentation.",
+      "confidence": 0.95,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    }
+  ],
+  "n_verified": 3
+}

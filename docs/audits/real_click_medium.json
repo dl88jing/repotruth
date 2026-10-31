@@ -1,0 +1,29 @@
+{
+  "repo": "click",
+  "source": "github-live-beam",
+  "github": "https://github.com/pallets/click",
+  "commit": "2247b35ea1c47c727d7a06e51fa280e12a863ff6",
+  "reasoning_effort": "medium",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 25.35,
+  "usage": {
+    "prompt_tokens": 70244,
+    "completion_tokens": 2979,
+    "reasoning_tokens": 2943,
+    "total_tokens": 73223
+  },
+  "pack": {
+    "files": 163,
+    "approx_tokens": 298572,
+    "total_chars": 1194289,
+    "prompt_blob_chars": 279950,
+    "max_chars": 280000
+  },
+  "summary": "No documentation-versus-code contradictions could be verified from the provided repository dump.",
+  "findings": [],
+  "n_findings": 0,
+  "verified_findings": [],
+  "n_verified": 0,
+  "notes": "Live Beam audit found no verified docs-vs-code contradictions in the packed subset (prompt truncated to 280k chars of ~1.2M)."
+}

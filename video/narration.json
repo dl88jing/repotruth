@@ -1,0 +1,26 @@
+[
+  [
+    "s0",
+    "Documentation that lies. Readmes promise APIs the code never shipped. RepoTruth catches them."
+  ],
+  [
+    "s1",
+    "Beam's million-token context packs a whole repository into one call. On encode slash httpcore, we measured fifty-six thousand seven hundred forty-two prompt tokens."
+  ],
+  [
+    "s2",
+    "Five verified true positives. Proxy.request does not exist. Host headers are not auto-added. AsyncioBackend is missing from the package. File and line evidence, kept only after we re-read the source."
+  ],
+  [
+    "s3",
+    "Token thrift, measured. On the tinyclick fixture, reasoning effort low used two hundred forty-six reasoning tokens versus five hundred seventy-two at medium \u2014 same three findings. That's fifty-seven percent fewer."
+  ],
+  [
+    "s4",
+    "Eight live Beam audits logged. Fixtures plus real open source: httpcore, itsdangerous, requests, starlette, and click. Eleven verified findings. Click came back clean \u2014 we keep honest zeros."
+  ],
+  [
+    "s5",
+    "Try it live at repotruth.vercel.app. Paste a public GitHub URL. Server-side Beam, rate-limited for judges. Built by Green Robin Labs for Build with Beam."
+  ]
+]

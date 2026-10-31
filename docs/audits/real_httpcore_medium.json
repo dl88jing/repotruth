@@ -1,0 +1,202 @@
+{
+  "repo": "httpcore",
+  "source": "github-live-beam",
+  "github": "https://github.com/encode/httpcore",
+  "commit": "10a658221deb38a4c5b16db55ab554b0bf731707",
+  "reasoning_effort": "medium",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 36.53,
+  "usage": {
+    "prompt_tokens": 56742,
+    "completion_tokens": 5212,
+    "reasoning_tokens": 4292,
+    "total_tokens": 61954
+  },
+  "pack": {
+    "files": 85,
+    "approx_tokens": 136380,
+    "total_chars": 545522,
+    "prompt_blob_chars": 249950,
+    "max_chars": 250000
+  },
+  "summary": "Found several documentation claims that do not match the implementation, including a non-existent backend class, incorrect request header behavior, an invalid proxy usage example, an incorrect trace event name, and overstated proxy/HTTP-version limitations.",
+  "findings": [
+    {
+      "id": "proxy-object-has-no-request-method",
+      "severity": "high",
+      "title": "Proxy example calls request() on httpcore.Proxy, which has no request method",
+      "doc_refs": [
+        "docs/proxies.md"
+      ],
+      "code_refs": [
+        "httpcore/_models.py"
+      ],
+      "evidence": "docs/proxies.md shows `r = proxy.request(\"GET\", \"https://www.example.com/\")`, but httpcore.Proxy only stores url, headers, ssl_context, and auth; request handling is performed by ConnectionPool/AsyncConnectionPool.",
+      "suggested_fix": "Change the example to use the pool: `r = pool.request(\"GET\", \"https://www.example.com/\")`.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/proxies.md calls proxy.request(...) but httpcore.Proxy is a config model without request(); ConnectionPool.request is the correct API."
+    },
+    {
+      "id": "request-model-does-not-auto-add-host",
+      "severity": "high",
+      "title": "Direct Request construction is documented as automatically adding a Host header",
+      "doc_refs": [
+        "docs/requests-responses-urls.md"
+      ],
+      "code_refs": [
+        "httpcore/_models.py",
+        "httpcore/_sync/interfaces.py",
+        "httpcore/_async/interfaces.py"
+      ],
+      "evidence": "The docs show `httpcore.Request(\"GET\", \"https://www.example.com/\", headers=headers)` producing a Host header, but Request.__init__ only enforces supplied headers. Host is added later by include_request_headers in the pool/interface request path.",
+      "suggested_fix": "Clarify that Host is added by connection pools/interfaces, not by Request itself, or update the example to reflect supplied headers only.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: Request(\"GET\", url).headers is [] at construct time; Host is added later by include_request_headers(). Docs show Host present immediately."
+    },
+    {
+      "id": "nonexistent-asyncio-backend",
+      "severity": "high",
+      "title": "Documentation references httpcore.backends.asyncio.AsyncioBackend, which does not exist",
+      "doc_refs": [
+        "docs/table-of-contents.md",
+        "docs/network-backends.md"
+      ],
+      "code_refs": [
+        "httpcore/_backends/anyio.py",
+        "httpcore/_backends/__init__.py"
+      ],
+      "evidence": "The docs list `httpcore.backends.asyncio.AsyncioBackend`, but the repository provides `httpcore.AnyIOBackend` (implemented in httpcore/_backends/anyio.py) and no asyncio backend module.",
+      "suggested_fix": "Replace AsyncioBackend references with httpcore.AnyIOBackend.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/table-of-contents.md lists httpcore.backends.asyncio.AsyncioBackend; no such module. Actual async backend is httpcore.AnyIOBackend (httpcore/_backends/anyio.py)."
+    },
+    {
+      "id": "incorrect-http11-trace-event-name",
+      "severity": "medium",
+      "title": "Trace event list uses http11.receive_response, but code emits receive_response_headers",
+      "doc_refs": [
+        "docs/extensions.md"
+      ],
+      "code_refs": [
+        "httpcore/_async/http11.py",
+        "httpcore/_sync/http11.py"
+      ],
+      "evidence": "docs/extensions.md lists `\"http11.receive_response\"`, while the implementation traces `\"receive_response_headers\"` and `\"receive_response_body\"`.",
+      "suggested_fix": "Update the documented HTTP/1.1 trace event names to match the implementation.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/extensions.md event list includes \"http11.receive_response\"; implementation traces receive_response_headers / receive_response_body."
+    },
+    {
+      "id": "proxy-http2-support-contradiction",
+      "severity": "medium",
+      "title": "Docs say proxies only support HTTP/1.1 servers, but tunnel connections can negotiate HTTP/2",
+      "doc_refs": [
+        "docs/proxies.md"
+      ],
+      "code_refs": [
+        "httpcore/_async/http_proxy.py",
+        "httpcore/_sync/http_proxy.py"
+      ],
+      "evidence": "docs/proxies.md states that httpcore only supports proxies to HTTP/1.1 servers, but AsyncTunnelHTTPConnection/ TunnelHTTPConnection can create an HTTP/2 connection when ALPN negotiates h2.",
+      "suggested_fix": "Clarify that the proxy connection itself is HTTP/1.1 while tunneled remote connections may use HTTP/2 when supported.",
+      "confidence": 0.9,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/proxies.md says proxies only support HTTP/1.1 servers; TunnelHTTPConnection can negotiate h2 via ALPN when http2=True."
+    }
+  ],
+  "n_findings": 5,
+  "verified_findings": [
+    {
+      "id": "proxy-object-has-no-request-method",
+      "severity": "high",
+      "title": "Proxy example calls request() on httpcore.Proxy, which has no request method",
+      "doc_refs": [
+        "docs/proxies.md"
+      ],
+      "code_refs": [
+        "httpcore/_models.py"
+      ],
+      "evidence": "docs/proxies.md shows `r = proxy.request(\"GET\", \"https://www.example.com/\")`, but httpcore.Proxy only stores url, headers, ssl_context, and auth; request handling is performed by ConnectionPool/AsyncConnectionPool.",
+      "suggested_fix": "Change the example to use the pool: `r = pool.request(\"GET\", \"https://www.example.com/\")`.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/proxies.md calls proxy.request(...) but httpcore.Proxy is a config model without request(); ConnectionPool.request is the correct API."
+    },
+    {
+      "id": "request-model-does-not-auto-add-host",
+      "severity": "high",
+      "title": "Direct Request construction is documented as automatically adding a Host header",
+      "doc_refs": [
+        "docs/requests-responses-urls.md"
+      ],
+      "code_refs": [
+        "httpcore/_models.py",
+        "httpcore/_sync/interfaces.py",
+        "httpcore/_async/interfaces.py"
+      ],
+      "evidence": "The docs show `httpcore.Request(\"GET\", \"https://www.example.com/\", headers=headers)` producing a Host header, but Request.__init__ only enforces supplied headers. Host is added later by include_request_headers in the pool/interface request path.",
+      "suggested_fix": "Clarify that Host is added by connection pools/interfaces, not by Request itself, or update the example to reflect supplied headers only.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: Request(\"GET\", url).headers is [] at construct time; Host is added later by include_request_headers(). Docs show Host present immediately."
+    },
+    {
+      "id": "nonexistent-asyncio-backend",
+      "severity": "high",
+      "title": "Documentation references httpcore.backends.asyncio.AsyncioBackend, which does not exist",
+      "doc_refs": [
+        "docs/table-of-contents.md",
+        "docs/network-backends.md"
+      ],
+      "code_refs": [
+        "httpcore/_backends/anyio.py",
+        "httpcore/_backends/__init__.py"
+      ],
+      "evidence": "The docs list `httpcore.backends.asyncio.AsyncioBackend`, but the repository provides `httpcore.AnyIOBackend` (implemented in httpcore/_backends/anyio.py) and no asyncio backend module.",
+      "suggested_fix": "Replace AsyncioBackend references with httpcore.AnyIOBackend.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/table-of-contents.md lists httpcore.backends.asyncio.AsyncioBackend; no such module. Actual async backend is httpcore.AnyIOBackend (httpcore/_backends/anyio.py)."
+    },
+    {
+      "id": "incorrect-http11-trace-event-name",
+      "severity": "medium",
+      "title": "Trace event list uses http11.receive_response, but code emits receive_response_headers",
+      "doc_refs": [
+        "docs/extensions.md"
+      ],
+      "code_refs": [
+        "httpcore/_async/http11.py",
+        "httpcore/_sync/http11.py"
+      ],
+      "evidence": "docs/extensions.md lists `\"http11.receive_response\"`, while the implementation traces `\"receive_response_headers\"` and `\"receive_response_body\"`.",
+      "suggested_fix": "Update the documented HTTP/1.1 trace event names to match the implementation.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/extensions.md event list includes \"http11.receive_response\"; implementation traces receive_response_headers / receive_response_body."
+    },
+    {
+      "id": "proxy-http2-support-contradiction",
+      "severity": "medium",
+      "title": "Docs say proxies only support HTTP/1.1 servers, but tunnel connections can negotiate HTTP/2",
+      "doc_refs": [
+        "docs/proxies.md"
+      ],
+      "code_refs": [
+        "httpcore/_async/http_proxy.py",
+        "httpcore/_sync/http_proxy.py"
+      ],
+      "evidence": "docs/proxies.md states that httpcore only supports proxies to HTTP/1.1 servers, but AsyncTunnelHTTPConnection/ TunnelHTTPConnection can create an HTTP/2 connection when ALPN negotiates h2.",
+      "suggested_fix": "Clarify that the proxy connection itself is HTTP/1.1 while tunneled remote connections may use HTTP/2 when supported.",
+      "confidence": 0.9,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/proxies.md says proxies only support HTTP/1.1 servers; TunnelHTTPConnection can negotiate h2 via ALPN when http2=True."
+    }
+  ],
+  "n_verified": 5
+}

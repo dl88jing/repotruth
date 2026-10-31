@@ -5,8 +5,13 @@
   "outputDirectory": "public",
   "functions": {
     "api/audit.js": {
-      "memory": 1024,
-      "maxDuration": 60
+      "memory": 1536,
+      "maxDuration": 300,
+      "includeFiles": "api_data/**"
+    },
+    "api/health.js": {
+      "memory": 256,
+      "maxDuration": 10
     }
   }
 }

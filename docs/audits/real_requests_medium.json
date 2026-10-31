@@ -1,0 +1,64 @@
+{
+  "repo": "requests",
+  "source": "github-live-beam",
+  "github": "https://github.com/psf/requests",
+  "commit": "3c7baaa05ab4aa49cc819ce3a819d260de19c157",
+  "reasoning_effort": "medium",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 24.46,
+  "usage": {
+    "prompt_tokens": 62572,
+    "completion_tokens": 3237,
+    "reasoning_tokens": 2967,
+    "total_tokens": 65809
+  },
+  "pack": {
+    "files": 102,
+    "approx_tokens": 152366,
+    "total_chars": 609467,
+    "prompt_blob_chars": 249950,
+    "max_chars": 250000
+  },
+  "summary": "Found one documentation/count mismatch in the public API documentation: it states all functionality is exposed through 7 methods, while the code also exposes requests.options().",
+  "findings": [
+    {
+      "id": "api-docs-seven-methods",
+      "severity": "medium",
+      "title": "API docs say all functionality is available through 7 methods, but options() is also public",
+      "doc_refs": [
+        "docs/api.rst"
+      ],
+      "code_refs": [
+        "src/requests/api.py",
+        "src/requests/__init__.py"
+      ],
+      "evidence": "docs/api.rst states: \"All of Requests' functionality can be accessed by these 7 methods.\" and lists request, head, get, post, put, patch, and delete. However, src/requests/api.py defines and exports options in addition to those methods, and src/requests/__init__.py imports options into the public requests namespace.",
+      "suggested_fix": "Update the API documentation to say 8 methods and include options, or reword the sentence so it does not imply an exhaustive count.",
+      "confidence": 0.98,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/api.rst claims \"7 methods\" listing request/head/get/post/put/patch/delete; src/requests/api.py and __init__.py also export options()."
+    }
+  ],
+  "n_findings": 1,
+  "verified_findings": [
+    {
+      "id": "api-docs-seven-methods",
+      "severity": "medium",
+      "title": "API docs say all functionality is available through 7 methods, but options() is also public",
+      "doc_refs": [
+        "docs/api.rst"
+      ],
+      "code_refs": [
+        "src/requests/api.py",
+        "src/requests/__init__.py"
+      ],
+      "evidence": "docs/api.rst states: \"All of Requests' functionality can be accessed by these 7 methods.\" and lists request, head, get, post, put, patch, and delete. However, src/requests/api.py defines and exports options in addition to those methods, and src/requests/__init__.py imports options into the public requests namespace.",
+      "suggested_fix": "Update the API documentation to say 8 methods and include options, or reword the sentence so it does not imply an exhaustive count.",
+      "confidence": 0.98,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/api.rst claims \"7 methods\" listing request/head/get/post/put/patch/delete; src/requests/api.py and __init__.py also export options()."
+    }
+  ],
+  "n_verified": 1
+}

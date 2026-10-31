@@ -1,0 +1,130 @@
+{
+  "repo": "tinyclick",
+  "source": "fixture-live-beam",
+  "github": null,
+  "reasoning_effort": "high",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 7.09,
+  "usage": {
+    "prompt_tokens": 814,
+    "completion_tokens": 1079,
+    "reasoning_tokens": 580,
+    "total_tokens": 1893
+  },
+  "pack": {
+    "files": 3,
+    "approx_tokens": 470,
+    "total_chars": 1880
+  },
+  "summary": "Documentation advertises flags and behaviors that the CLI does not implement: --count vs --times, glob/recursive expansion, and a zero exit code for missing files.",
+  "findings": [
+    {
+      "id": "flag-name-mismatch",
+      "severity": "high",
+      "title": "Documented --count flag is implemented as --times",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README usage and docs/cli.md describe `--count`, but src/cli.py registers `count_p.add_argument(\"--times\", ...)` and checks `args.times`.",
+      "suggested_fix": "Rename the implemented flag to `--count`, or update all documentation to use `--times`.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "glob-recursive-not-implemented",
+      "severity": "medium",
+      "title": "Documented glob and recursive expansion is not implemented",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README says TinyClick supports globs like `src/**/*.py`, and docs/cli.md documents `--recursive`, but src/cli.py only accepts a single `path: Path`, has no `--recursive` argument, and performs no glob expansion.",
+      "suggested_fix": "Implement glob/recursive handling and add the `--recursive` flag, or remove those claims from the documentation.",
+      "confidence": 0.98,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "missing-file-exit-code",
+      "severity": "high",
+      "title": "Missing file exits with code 2 despite docs saying code 0",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README and docs/cli.md state a missing PATH is non-fatal and exits with code 0, but src/cli.py returns 2 when `not args.path.exists()`.",
+      "suggested_fix": "Return 0 for missing files as documented, or update documentation to state exit code 2.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    }
+  ],
+  "n_findings": 3,
+  "verified": null,
+  "verified_findings": [
+    {
+      "id": "flag-name-mismatch",
+      "severity": "high",
+      "title": "Documented --count flag is implemented as --times",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README usage and docs/cli.md describe `--count`, but src/cli.py registers `count_p.add_argument(\"--times\", ...)` and checks `args.times`.",
+      "suggested_fix": "Rename the implemented flag to `--count`, or update all documentation to use `--times`.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "glob-recursive-not-implemented",
+      "severity": "medium",
+      "title": "Documented glob and recursive expansion is not implemented",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README says TinyClick supports globs like `src/**/*.py`, and docs/cli.md documents `--recursive`, but src/cli.py only accepts a single `path: Path`, has no `--recursive` argument, and performs no glob expansion.",
+      "suggested_fix": "Implement glob/recursive handling and add the `--recursive` flag, or remove those claims from the documentation.",
+      "confidence": 0.98,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "missing-file-exit-code",
+      "severity": "high",
+      "title": "Missing file exits with code 2 despite docs saying code 0",
+      "doc_refs": [
+        "README.md",
+        "docs/cli.md"
+      ],
+      "code_refs": [
+        "src/cli.py"
+      ],
+      "evidence": "README and docs/cli.md state a missing PATH is non-fatal and exits with code 0, but src/cli.py returns 2 when `not args.path.exists()`.",
+      "suggested_fix": "Return 0 for missing files as documented, or update documentation to state exit code 2.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    }
+  ],
+  "n_verified": 3
+}

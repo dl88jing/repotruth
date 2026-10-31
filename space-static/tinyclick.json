@@ -1,58 +1,68 @@
 {
   "repo": "tinyclick",
-  "summary": "Three documentation lies: wrong flag name, missing glob support, and incorrect exit code on missing files.",
+  "summary": "Documentation advertises flags, exit behavior, and glob support that the CLI implementation does not provide.",
   "findings": [
     {
-      "id": "TC1",
+      "id": "flag-name-drift",
       "severity": "high",
-      "title": "Flag mismatch: docs say --count, code implements --times",
+      "title": "Docs advertise --count, but implementation uses --times",
       "doc_refs": [
-        "README.md",
-        "docs/cli.md"
+        "README.md: usage `tinyclick count PATH [--count]`",
+        "docs/cli.md: `--count` flag table row"
       ],
       "code_refs": [
-        "src/cli.py"
+        "src/cli.py:15 `count_p.add_argument(\"--times\", ...)`"
       ],
-      "evidence": "README and docs/cli.md document `--count`; argparse defines `--times` only.",
-      "suggested_fix": "Either rename the flag to `--count` or update docs to `--times`.",
-      "confidence": 0.95
+      "evidence": "README and docs/cli.md describe a `--count` flag, while src/cli.py defines `--times` and checks `args.times`.",
+      "suggested_fix": "Rename the implementation flag to `--count`, or update documentation to `--times`.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     },
     {
-      "id": "TC2",
+      "id": "missing-file-exit-code",
+      "severity": "high",
+      "title": "Docs say missing file exits 0, code exits 2",
+      "doc_refs": [
+        "README.md: 'exits with code 0'",
+        "docs/cli.md: '0 success or missing file (non-fatal)'"
+      ],
+      "code_refs": [
+        "src/cli.py:20-23 missing path branch returns 2"
+      ],
+      "evidence": "Both docs state a missing path is non-fatal with exit code 0, but the code prints a warning and returns 2.",
+      "suggested_fix": "Make the missing-file branch return 0, or update docs to state exit code 2.",
+      "confidence": 0.99,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
+    },
+    {
+      "id": "glob-recursive-unimplemented",
       "severity": "medium",
-      "title": "Docs claim glob / --recursive support that does not exist",
+      "title": "Docs claim glob and recursive support, but implementation does not expand globs",
       "doc_refs": [
-        "README.md",
-        "docs/cli.md"
+        "README.md: 'Supports globs like src/**/*.py.'",
+        "docs/cli.md: `--recursive` flag table row"
       ],
       "code_refs": [
-        "src/cli.py"
+        "src/cli.py:13 `count_p.add_argument(\"path\", type=Path)`",
+        "src/cli.py:20 `if not args.path.exists()`"
       ],
-      "evidence": "README mentions globs `src/**/*.py` and docs list `--recursive`; cli.py has neither.",
-      "suggested_fix": "Remove glob/--recursive claims or implement them.",
-      "confidence": 0.92
-    },
-    {
-      "id": "TC3",
-      "severity": "high",
-      "title": "Missing-file exit code is 2, docs say 0",
-      "doc_refs": [
-        "README.md",
-        "docs/cli.md"
-      ],
-      "code_refs": [
-        "src/cli.py"
-      ],
-      "evidence": "Docs: exit 0 on missing file. Code returns 2.",
-      "suggested_fix": "Align docs to exit code 2, or change return to 0 if non-fatal is intended.",
-      "confidence": 0.97
+      "evidence": "Documentation advertises glob expansion and a `--recursive` flag, but the parser accepts a single Path and only checks whether that exact path exists.",
+      "suggested_fix": "Implement glob expansion and `--recursive`, or remove those claims from documentation.",
+      "confidence": 0.95,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     }
   ],
   "usage": {
-    "prompt_tokens": 1840,
-    "completion_tokens": 620,
-    "reasoning_tokens": 410,
-    "total_tokens": 2460
+    "prompt_tokens": 813,
+    "completion_tokens": 1157,
+    "reasoning_tokens": 572,
+    "total_tokens": 1970
   },
-  "reasoning_effort": "medium"
+  "reasoning_effort": "medium",
+  "latency_s": 7.22,
+  "model": "Beam-1.0-501B-A23B",
+  "source": "live-beam"
 }

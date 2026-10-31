@@ -1,0 +1,64 @@
+{
+  "repo": "starlette",
+  "source": "github-live-beam",
+  "github": "https://github.com/Kludex/starlette",
+  "commit": "2745bbc5afa2f8ce900d290bedca2bc5d3f3cfe8",
+  "reasoning_effort": "medium",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 21.37,
+  "usage": {
+    "prompt_tokens": 76850,
+    "completion_tokens": 2543,
+    "reasoning_tokens": 2252,
+    "total_tokens": 79393
+  },
+  "pack": {
+    "files": 137,
+    "approx_tokens": 273468,
+    "total_chars": 1093873,
+    "prompt_blob_chars": 299950,
+    "max_chars": 300000
+  },
+  "summary": "Found one documentation contradiction: the docs claim Starlette only requires `anyio`, but the project metadata declares `typing_extensions` as a required dependency on Python versions below 3.13.",
+  "findings": [
+    {
+      "id": "docs-dependency-typing-extensions",
+      "severity": "low",
+      "title": "Documentation says Starlette only requires `anyio`, but `typing_extensions` is a required dependency on Python < 3.13",
+      "doc_refs": [
+        "README.md",
+        "docs/index.md"
+      ],
+      "code_refs": [
+        "pyproject.toml"
+      ],
+      "evidence": "README.md and docs/index.md state: \"Starlette only requires `anyio`\". However, pyproject.toml declares `dependencies = [\"anyio>=4.0.0,<5\", \"typing_extensions>=4.10.0; python_version < '3.13'\"]`, making `typing_extensions` a required dependency on Python versions below 3.13.",
+      "suggested_fix": "Update the dependency documentation to state that Starlette requires `anyio`, and also requires `typing_extensions` on Python versions below 3.13.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: README/docs say \"only requires anyio\"; pyproject.toml also requires typing_extensions on Python < 3.13. Kept as low severity (conditional dependency)."
+    }
+  ],
+  "n_findings": 1,
+  "verified_findings": [
+    {
+      "id": "docs-dependency-typing-extensions",
+      "severity": "low",
+      "title": "Documentation says Starlette only requires `anyio`, but `typing_extensions` is a required dependency on Python < 3.13",
+      "doc_refs": [
+        "README.md",
+        "docs/index.md"
+      ],
+      "code_refs": [
+        "pyproject.toml"
+      ],
+      "evidence": "README.md and docs/index.md state: \"Starlette only requires `anyio`\". However, pyproject.toml declares `dependencies = [\"anyio>=4.0.0,<5\", \"typing_extensions>=4.10.0; python_version < '3.13'\"]`, making `typing_extensions` a required dependency on Python versions below 3.13.",
+      "suggested_fix": "Update the dependency documentation to state that Starlette requires `anyio`, and also requires `typing_extensions` on Python versions below 3.13.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: README/docs say \"only requires anyio\"; pyproject.toml also requires typing_extensions on Python < 3.13. Kept as low severity (conditional dependency)."
+    }
+  ],
+  "n_verified": 1
+}

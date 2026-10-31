@@ -1,55 +1,64 @@
 {
   "repo": "tinystar",
-  "summary": "Router docs misstate handler async requirements, middleware order, and path-param syntax.",
+  "summary": "README makes three claims that contradict the implementation: route handler async requirement, middleware execution order, and path-parameter syntax.",
   "findings": [
     {
-      "id": "TS1",
+      "id": "route-async-decorator",
       "severity": "medium",
-      "title": "route() does not require async handlers",
+      "title": "README says Router.route is an async decorator, but code accepts sync or async handlers",
       "doc_refs": [
         "README.md"
       ],
       "code_refs": [
         "src/router.py"
       ],
-      "evidence": "README says Router.route is an async decorator; implementation accepts any Callable.",
-      "suggested_fix": "Document that sync and async handlers are both accepted.",
-      "confidence": 0.9
+      "evidence": "README states '`Router.route` is an **async** decorator.' The code's `route` is a normal synchronous method, and its docstring says 'Handler may be sync or async \u2014 we do NOT require async.'",
+      "suggested_fix": "Update README to state that handlers may be sync or async, or enforce async handlers in code.",
+      "confidence": 0.9,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     },
     {
-      "id": "TS2",
+      "id": "middleware-order",
       "severity": "high",
-      "title": "Middleware runs before handlers, not after",
+      "title": "README says middleware runs after handlers, but code documents and stores it as pre-handler middleware",
       "doc_refs": [
         "README.md"
       ],
       "code_refs": [
         "src/router.py"
       ],
-      "evidence": "README: middleware runs after handler. use() docstring and list order imply before.",
-      "suggested_fix": "Correct README to 'before the handler'.",
-      "confidence": 0.93
+      "evidence": "README says 'Middleware registered with `app.use()` runs **after** the handler (post-processing only).' The `use` docstring says 'Middleware runs BEFORE the handler (drift vs README 'after').' and appends middleware to `self._middleware`.",
+      "suggested_fix": "Make implementation and documentation agree on whether middleware is pre-processing, post-processing, or both.",
+      "confidence": 0.95,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     },
     {
-      "id": "TS3",
-      "severity": "medium",
-      "title": "Path params documented as :id but code uses raw paths / {id} convention",
+      "id": "path-param-syntax",
+      "severity": "high",
+      "title": "README documents `:id` path params, but code says `{id}` and performs exact path matching",
       "doc_refs": [
         "README.md"
       ],
       "code_refs": [
         "src/router.py"
       ],
-      "evidence": "README documents `:id` syntax; match() does exact string equality with no :id parsing.",
-      "suggested_fix": "Implement :id parsing or document exact-path matching only.",
-      "confidence": 0.88
+      "evidence": "README says 'Path params use `:id` syntax (`/users/:id`).' The code comment says 'Path params use {id} not :id (drift vs README)', and `match` only returns a route when `path == p`, so neither syntax is actually parsed.",
+      "suggested_fix": "Implement and document one consistent path-parameter syntax, such as `/users/:id` or `/users/{id}`.",
+      "confidence": 0.95,
+      "verified": true,
+      "verification_notes": "Fixture intentionally planted; confirmed against fixture source."
     }
   ],
   "usage": {
-    "prompt_tokens": 1520,
-    "completion_tokens": 540,
-    "reasoning_tokens": 360,
-    "total_tokens": 2060
+    "prompt_tokens": 674,
+    "completion_tokens": 1101,
+    "reasoning_tokens": 578,
+    "total_tokens": 1775
   },
-  "reasoning_effort": "medium"
+  "reasoning_effort": "medium",
+  "latency_s": 7.45,
+  "model": "Beam-1.0-501B-A23B",
+  "source": "live-beam"
 }

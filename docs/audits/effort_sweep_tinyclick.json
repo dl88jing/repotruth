@@ -1,0 +1,26 @@
+[
+  {
+    "effort": "low",
+    "reasoning_tokens": 246,
+    "completion_tokens": 703,
+    "prompt_tokens": 812,
+    "n_findings": 3,
+    "latency_s": 4.29
+  },
+  {
+    "effort": "medium",
+    "reasoning_tokens": 572,
+    "completion_tokens": 1157,
+    "prompt_tokens": 813,
+    "n_findings": 3,
+    "latency_s": 7.22
+  },
+  {
+    "effort": "high",
+    "reasoning_tokens": 580,
+    "completion_tokens": 1079,
+    "prompt_tokens": 814,
+    "n_findings": 3,
+    "latency_s": 7.09
+  }
+]

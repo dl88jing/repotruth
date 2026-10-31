@@ -1,0 +1,96 @@
+{
+  "repo": "itsdangerous",
+  "source": "github-live-beam",
+  "github": "https://github.com/pallets/itsdangerous",
+  "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+  "reasoning_effort": "medium",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "latency_s": 20.99,
+  "usage": {
+    "prompt_tokens": 40291,
+    "completion_tokens": 3326,
+    "reasoning_tokens": 2859,
+    "total_tokens": 43617
+  },
+  "pack": {
+    "files": 39,
+    "approx_tokens": 28026,
+    "total_chars": 112107,
+    "prompt_blob_chars": 114076,
+    "max_chars": 200000
+  },
+  "summary": "Found documentation examples that do not match the code: Serializer.dumps returns str by default, not bytes, and an example uses URLSafeSerializer without importing it.",
+  "findings": [
+    {
+      "id": "serializer-dumps-return-type",
+      "severity": "high",
+      "title": "Serializer.dumps example shows a bytes result, but the default serializer returns str",
+      "doc_refs": [
+        "docs/serializer.rst:16-18"
+      ],
+      "code_refs": [
+        "src/itsdangerous/serializer.py:309-318"
+      ],
+      "evidence": "docs/serializer.rst shows `s.dumps([1, 2, 3, 4])` followed by `b'[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo'`. In src/itsdangerous/serializer.py, Serializer.dumps decodes the signed value to UTF-8 when `is_text_serializer` is true, and the default serializer is the standard library json module, which is a text serializer.",
+      "suggested_fix": "Change the example output to a str without the `b` prefix, or use a bytes serializer if bytes output is intended.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/serializer.rst shows bytes literal b'[1, 2, 3, 4]...'; Serializer.dumps with default JSON text serializer returns str via rv.decode(\"utf-8\") (serializer.py)."
+    },
+    {
+      "id": "serializer-example-missing-urlsafe-import",
+      "severity": "medium",
+      "title": "Responding to Failure example uses URLSafeSerializer without importing it",
+      "doc_refs": [
+        "docs/serializer.rst"
+      ],
+      "code_refs": [
+        "src/itsdangerous/url_safe.py"
+      ],
+      "evidence": "The example imports `Serializer` and `BadSignature, BadData`, but then constructs `s = URLSafeSerializer(\"secret-key\")`. URLSafeSerializer is defined in src/itsdangerous/url_safe.py and is not imported in that example.",
+      "suggested_fix": "Add `from itsdangerous.url_safe import URLSafeSerializer` to the example, or use `Serializer` consistently.",
+      "confidence": 1.0,
+      "verified": false,
+      "verification_notes": "Dropped: incomplete import in example is a snippet incompleteness, not a behavioral contradiction."
+    }
+  ],
+  "n_findings": 2,
+  "verified_findings": [
+    {
+      "id": "serializer-dumps-return-type",
+      "severity": "high",
+      "title": "Serializer.dumps example shows a bytes result, but the default serializer returns str",
+      "doc_refs": [
+        "docs/serializer.rst:16-18"
+      ],
+      "code_refs": [
+        "src/itsdangerous/serializer.py:309-318"
+      ],
+      "evidence": "docs/serializer.rst shows `s.dumps([1, 2, 3, 4])` followed by `b'[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo'`. In src/itsdangerous/serializer.py, Serializer.dumps decodes the signed value to UTF-8 when `is_text_serializer` is true, and the default serializer is the standard library json module, which is a text serializer.",
+      "suggested_fix": "Change the example output to a str without the `b` prefix, or use a bytes serializer if bytes output is intended.",
+      "confidence": 1.0,
+      "verified": true,
+      "verification_notes": "Confirmed: docs/serializer.rst shows bytes literal b'[1, 2, 3, 4]...'; Serializer.dumps with default JSON text serializer returns str via rv.decode(\"utf-8\") (serializer.py)."
+    }
+  ],
+  "n_verified": 1,
+  "dropped_findings": [
+    {
+      "id": "serializer-example-missing-urlsafe-import",
+      "severity": "medium",
+      "title": "Responding to Failure example uses URLSafeSerializer without importing it",
+      "doc_refs": [
+        "docs/serializer.rst"
+      ],
+      "code_refs": [
+        "src/itsdangerous/url_safe.py"
+      ],
+      "evidence": "The example imports `Serializer` and `BadSignature, BadData`, but then constructs `s = URLSafeSerializer(\"secret-key\")`. URLSafeSerializer is defined in src/itsdangerous/url_safe.py and is not imported in that example.",
+      "suggested_fix": "Add `from itsdangerous.url_safe import URLSafeSerializer` to the example, or use `Serializer` consistently.",
+      "confidence": 1.0,
+      "verified": false,
+      "verification_notes": "Dropped: incomplete import in example is a snippet incompleteness, not a behavioral contradiction."
+    }
+  ]
+}
