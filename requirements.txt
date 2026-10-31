@@ -1,0 +1,3 @@
+# Core CLI needs only the stdlib. Optional Gradio Space deps:
+gradio>=4.44.0,<6
+pytest>=8.0.0

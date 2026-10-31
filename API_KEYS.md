@@ -44,3 +44,14 @@ python scripts/repotruth_cli.py fixtures/tinyclick
 ## Gradio Space hosting
 
 New Gradio Spaces on free CPU return **HTTP 402** (HF PRO). RepoTruth is published as a free **Static** Space with interactive fixtures. The Gradio app in `space/` runs locally or on HF PRO / Modal / another host. After PRO or a host is available, set Space secrets `REFLECTION_API_KEY` or `HF_TOKEN`.
+
+
+## Automated wire-up (this box)
+
+When another agent drops a key at `/workspace/beam-hack/.reflection_api_key`:
+
+```bash
+./scripts/wire_reflection_key.sh
+```
+
+That script adds `REFLECTION_API_KEY` as a Sensitive Vercel env (Production + Preview) without printing the value.

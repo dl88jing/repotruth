@@ -2,5 +2,11 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "functions": {
+    "api/audit.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
 }

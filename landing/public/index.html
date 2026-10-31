@@ -81,7 +81,7 @@ code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; }
     <h1>Catch documentation<br/>that lies.</h1>
     <p class="lead">
       RepoTruth packs an entire repository into <strong>one Beam call</strong>, finds places where the docs contradict the code,
-      and shows a live <strong>token thrift meter</strong> — Beam’s ~3× leaner reasoning, made visible.
+      and shows a <strong>token thrift meter</strong>. Public demos use reproducible fixtures; live Beam when a Reflection/HF key is set.
     </p>
 
     <div class="cta">
@@ -101,26 +101,99 @@ code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; }
       </div>
       <div class="card">
         <h3>Token thrift meter</h3>
-        <p>Prompt / reasoning / completion tokens and reasoning_effort — Beam’s headline efficiency, not a slide claim.</p>
+        <p>Prompt / reasoning / completion tokens and reasoning_effort — live when keyed; fixture-seeded on the public demo.</p>
       </div>
     </div>
 
-    <div class="meter">
-      <div>fixture · tinyclick · effort=medium · backend=beam</div>
-      <div style="margin-top:0.6rem;color:#9aa3b8">reasoning tokens vs 3× baseline</div>
-      <div class="bar"><span></span></div>
-      <div>410 reasoning · baseline ~1,230 · <span style="color:var(--ok)">~67% leaner</span></div>
-      <div class="findings">
-        <div class="finding"><strong>[HIGH]</strong> Docs say <code>--count</code>, code implements <code>--times</code></div>
-        <div class="finding med"><strong>[MEDIUM]</strong> Docs claim globs / <code>--recursive</code> that do not exist</div>
-        <div class="finding"><strong>[HIGH]</strong> Missing-file exit code is <code>2</code>, docs say <code>0</code></div>
+    <div class="meter" id="demo">
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:space-between">
+        <div>
+          <label style="color:var(--muted);font-size:0.85rem">Fixture
+            <select id="fixture" style="margin-left:0.4rem;background:#0d1220;color:var(--fg);border:1px solid #2a3150;border-radius:8px;padding:0.35rem 0.5rem">
+              <option value="tinyclick">tinyclick</option>
+              <option value="tinystar">tinystar</option>
+              <option value="tinyhttp">tinyhttp</option>
+            </select>
+          </label>
+        </div>
+        <button id="auditBtn" class="btn primary" style="padding:0.55rem 0.9rem;border:0;cursor:pointer">Audit with Beam</button>
       </div>
+      <div id="status" style="margin-top:0.75rem;color:#9aa3b8">Checking /api/health…</div>
+      <div style="margin-top:0.6rem;color:#9aa3b8">Token thrift (live usage when keyed; fixture fallback labeled)</div>
+      <div class="bar"><span id="thriftBar" style="width:33%"></span></div>
+      <div id="thriftLine">—</div>
+      <div class="findings" id="findings"></div>
     </div>
+    <script>
+    const statusEl = document.getElementById('status');
+    const findingsEl = document.getElementById('findings');
+    const thriftLine = document.getElementById('thriftLine');
+    const thriftBar = document.getElementById('thriftBar');
+    const btn = document.getElementById('auditBtn');
+
+    async function refreshHealth() {
+      try {
+        const r = await fetch('/api/health');
+        const j = await r.json();
+        statusEl.textContent = j.reflection_key_present
+          ? `API mode: live-ready · model ${j.model}`
+          : 'API mode: fixture-only (no Reflection key on Vercel)';
+      } catch (e) {
+        statusEl.textContent = 'API health unreachable — UI will try /api/audit anyway.';
+      }
+    }
+
+    function render(j) {
+      const res = j.result || {};
+      const u = res.usage || {};
+      const reasoning = u.reasoning_tokens || 0;
+      const typical = Math.max(reasoning * 3, reasoning + 800) || 1200;
+      const pct = typical ? Math.round(100 * (1 - reasoning / typical)) : 0;
+      const live = j.live || res.usage_source === 'live';
+      const fb = res.fallback_from;
+      statusEl.innerHTML = live
+        ? `<span style="color:var(--ok)">LIVE Beam</span> · ${res.model || ''} · ${res.latency_s?.toFixed?.(2) || '?'}s · usage_source=live`
+        : `<span style="color:#fbbf24">FIXTURE / FALLBACK</span> · ${fb ? ('from '+fb+': '+(res.fallback_reason||'')) : 'fixture-seeded'}`;
+      thriftLine.innerHTML = `${reasoning} reasoning · illustrative 3× baseline ~${typical} · <span style="color:var(--ok)">~${pct}% leaner on this row</span> · source=<code>${res.usage_source||'?'}</code>`;
+      thriftBar.style.width = Math.max(8, Math.min(100, 100 - pct)) + '%';
+      const findings = (res.parsed && res.parsed.findings) || [];
+      const summary = (res.parsed && res.parsed.summary) || '';
+      findingsEl.innerHTML = `<div style="color:var(--muted);margin:0.4rem 0 0.6rem">${summary}</div>` + findings.map(f => {
+        const sev = (f.severity||'?').toUpperCase();
+        const cls = sev === 'MEDIUM' || sev === 'MED' ? 'finding med' : 'finding';
+        return `<div class="${cls}"><strong>[${sev}]</strong> ${f.title||''}</div>`;
+      }).join('');
+    }
+
+    btn.onclick = async () => {
+      btn.disabled = true;
+      statusEl.textContent = 'Calling Beam (or fixture fallback)…';
+      try {
+        const fixture = document.getElementById('fixture').value;
+        const r = await fetch('/api/audit', {
+          method: 'POST',
+          headers: {'content-type':'application/json'},
+          body: JSON.stringify({fixture, effort:'medium'}),
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || r.statusText);
+        render(j);
+      } catch (e) {
+        statusEl.textContent = 'Audit failed: ' + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    refreshHealth();
+    // Auto-run tinyclick once so judges see something without clicking
+    btn.click();
+    </script>
 
     <div class="footer">
       Built by <strong>Green Robin Labs</strong> for the Hugging Face × Reflection
       <a href="https://huggingface.co/reflection/Beam-1.0-501B-A23B/discussions/5">Build with Beam</a> challenge.
-      Model: <code>reflection/Beam-1.0-501B-A23B</code>. Apache-2.0.
+      Model: <code>reflection/Beam-1.0-501B-A23B</code>. Apache-2.0.<br/><span style="color:#9aa3b8">Honest status: this landing and the HF Static Space show fixture-seeded findings. CLI live mode: <code>REFLECTION_API_KEY</code> + <code>./demo.sh</code>.</span>
     </div>
   </div>
 </body>

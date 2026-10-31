@@ -40,7 +40,7 @@ code{background:#111827;padding:2px 6px;border-radius:4px;font-size:.9em}
 </header>
 <main>
   <h2>Interactive fixture demo</h2>
-  <p style="color:var(--muted)">Pre-computed Beam-style autopsies of three intentionally lying mini-repos. Run live with a Reflection API key or HF Inference Providers token via the CLI / Gradio app in the GitHub repo.</p>
+  <p style="color:var(--muted)">This Space shows <b>fixture-seeded</b> autopsies (Static SDK; no live model calls here). For a <b>live Beam</b> audit, open <a href="https://repotruth.vercel.app">repotruth.vercel.app</a> (Vercel <code>/api/audit</code>) or run <code>./demo.sh</code> with <code>REFLECTION_API_KEY</code>. Provider failures fall back to fixtures with a clear banner.</p>
   <div class="tabs" id="tabs"></div>
   <div class="grid">
     <div class="card" id="summary"></div>
@@ -51,6 +51,7 @@ code{background:#111827;padding:2px 6px;border-radius:4px;font-size:.9em}
       <div>Beam reasoning tokens</div>
       <div class="meter"><i id="thriftBar" style="width:33%"></i></div>
       <p id="thriftText" style="color:var(--muted);font-size:.9rem"></p>
+      <p style="color:var(--muted);font-size:.85rem">Usage on this Space is <b>fixture-seeded</b> (not a live Beam measurement).</p>
     </div>
   </div>
   <div class="card" id="findings"></div>
@@ -59,7 +60,7 @@ code{background:#111827;padding:2px 6px;border-radius:4px;font-size:.9em}
     <ul>
       <li><b>1M context</b> — pack README + docs + source in one call</li>
       <li><b>Agentic coding / SWE</b> — judges functional lies, not wording</li>
-      <li><b>Token-efficient reasoning</b> — thrift meter makes the ~3× savings visible</li>
+      <li><b>Token-efficient reasoning</b> — thrift meter shows Reflection’s ~3× claim as an illustrative baseline; live usage when keyed</li>
     </ul>
     <p>Affiliation: <b>Green Robin Labs</b> · Challenge: HF × Reflection Build with Beam</p>
   </div>
@@ -87,7 +88,7 @@ function render(){
     <p><b>${findings.length}</b> findings · effort <code>${d.reasoning_effort||'medium'}</code></p>`;
   const pct = Math.round(100 * beamR / baseline);
   document.getElementById('thriftBar').style.width = pct + '%';
-  document.getElementById('thriftText').textContent = `${beamR} reasoning tokens vs ~${baseline} baseline (~3× leaner) · total ${u.total_tokens||'?'} tokens`;
+  /* honesty */ document.getElementById('thriftText').textContent = `${beamR} reasoning tokens vs ~${baseline} baseline (~3× leaner) · total ${u.total_tokens||'?'} tokens`;
   document.getElementById('findings').innerHTML = '<h3 style="margin-top:0">Findings</h3>' + findings.map(f => {
     const sev = (f.severity||'medium').toUpperCase();
     const docs = (f.doc_refs||[]).join(', ') || 'README.md';

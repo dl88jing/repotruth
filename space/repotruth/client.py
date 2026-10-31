@@ -5,7 +5,7 @@ import json
 import os
 import re
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +24,13 @@ class BeamResult:
     latency_s: float
     reasoning_effort: str
     raw: dict[str, Any] | None = None
+    fallback_from: str | None = None
+    fallback_reason: str | None = None
+    usage_source: str = "live"  # live | fixture-seeded
+
+    @property
+    def is_live(self) -> bool:
+        return self.backend in {"reflection", "hf"} and self.fallback_from is None
 
 
 def _extract_json(text: str) -> dict[str, Any]:
@@ -68,42 +75,72 @@ def audit_repo(
     reasoning_effort: str = "medium",
     max_tokens: int = 4096,
     backend: str | None = None,
+    allow_fallback: bool | None = None,
 ) -> BeamResult:
+    """Audit a packed repo.
+
+    When a live backend is requested but the provider errors, falls back to the
+    fixture/mock response unless REPOTRUTH_NO_FALLBACK=1 or allow_fallback=False.
+    Fallback results are clearly labeled via fallback_from / fallback_reason.
+    """
     backend = backend or resolve_backend()
     messages = build_messages(packed)
+    if allow_fallback is None:
+        allow_fallback = os.environ.get("REPOTRUTH_NO_FALLBACK", "").strip() not in {"1", "true", "yes"}
 
     if backend == "mock":
         return _mock_audit(packed, reasoning_effort)
 
-    if backend == "reflection":
-        return _openai_compat_audit(
-            packed,
-            messages,
-            base_url="https://api.reflection.ai/openai/v1",
-            api_key=os.environ["REFLECTION_API_KEY"],
-            model=os.environ.get("BEAM_MODEL", "Beam-1.0-501B-A23B"),
-            reasoning_effort=reasoning_effort,
-            max_tokens=max_tokens,
-            backend_name="reflection",
-        )
+    try:
+        if backend == "reflection":
+            key = os.environ.get("REFLECTION_API_KEY")
+            if not key:
+                raise RuntimeError("REFLECTION_API_KEY is not set")
+            return _openai_compat_audit(
+                packed,
+                messages,
+                base_url=os.environ.get("REFLECTION_BASE_URL", "https://api.reflection.ai/openai/v1"),
+                api_key=key,
+                model=os.environ.get("BEAM_MODEL", "Beam-1.0-501B-A23B"),
+                reasoning_effort=reasoning_effort,
+                max_tokens=max_tokens,
+                backend_name="reflection",
+            )
 
-    token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGINGFACE_HUB_TOKEN")
-    if not token:
-        return _mock_audit(packed, reasoning_effort)
-    model = os.environ.get(
-        "BEAM_HF_MODEL",
-        "reflection/Beam-1.0-501B-A23B:baseten",
-    )
-    return _openai_compat_audit(
-        packed,
-        messages,
-        base_url="https://router.huggingface.co/v1",
-        api_key=token,
-        model=model,
-        reasoning_effort=reasoning_effort,
-        max_tokens=max_tokens,
-        backend_name="hf",
-    )
+        if backend == "hf":
+            token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGINGFACE_HUB_TOKEN")
+            if not token:
+                raise RuntimeError("HF_TOKEN / HUGGINGFACE_HUB_TOKEN is not set")
+            model = os.environ.get(
+                "BEAM_HF_MODEL",
+                "reflection/Beam-1.0-501B-A23B:baseten",
+            )
+            return _openai_compat_audit(
+                packed,
+                messages,
+                base_url=os.environ.get("HF_BASE_URL", "https://router.huggingface.co/v1"),
+                api_key=token,
+                model=model,
+                reasoning_effort=reasoning_effort,
+                max_tokens=max_tokens,
+                backend_name="hf",
+            )
+
+        raise RuntimeError(f"Unknown backend: {backend}")
+    except Exception as exc:  # noqa: BLE001 — provider failures must become labeled fallbacks
+        if not allow_fallback:
+            raise
+        result = _mock_audit(packed, reasoning_effort)
+        result.fallback_from = backend
+        result.fallback_reason = f"{type(exc).__name__}: {exc}"
+        # Keep mock backend name but annotate parsed summary so UIs show the banner.
+        summary = result.parsed.get("summary") or ""
+        banner = f"[FALLBACK from {backend}] Provider failed ({type(exc).__name__}). Showing fixture-seeded findings. "
+        result.parsed = dict(result.parsed)
+        result.parsed["summary"] = banner + summary
+        result.parsed["fallback_from"] = backend
+        result.parsed["fallback_reason"] = result.fallback_reason
+        return result
 
 
 def _mock_audit(packed: PackedRepo, reasoning_effort: str) -> BeamResult:
@@ -113,7 +150,10 @@ def _mock_audit(packed: PackedRepo, reasoning_effort: str) -> BeamResult:
     else:
         parsed = {
             "repo": packed.name,
-            "summary": "Mock mode: no fixture findings for this repo. Set REFLECTION_API_KEY or HF_TOKEN with Inference Providers permission.",
+            "summary": (
+                "Mock mode: no fixture findings for this repo. "
+                "Set REFLECTION_API_KEY or HF_TOKEN with Inference Providers permission."
+            ),
             "findings": [],
         }
     usage = parsed.get("usage") or {
@@ -131,6 +171,7 @@ def _mock_audit(packed: PackedRepo, reasoning_effort: str) -> BeamResult:
         latency_s=0.35,
         reasoning_effort=reasoning_effort,
         raw=None,
+        usage_source="fixture-seeded",
     )
 
 
@@ -190,4 +231,5 @@ def _openai_compat_audit(
         latency_s=latency,
         reasoning_effort=reasoning_effort,
         raw=raw,
+        usage_source="live",
     )

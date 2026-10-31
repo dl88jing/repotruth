@@ -1,0 +1,26 @@
+{
+  "checked_at_pt": "2026-10-31 ~4:05 PM PT",
+  "fixture": "tinyclick",
+  "backend": "reflection",
+  "model": "Beam-1.0-501B-A23B",
+  "usage": {
+    "prompt_tokens": 813,
+    "completion_tokens": 947,
+    "reasoning_tokens": 370,
+    "total_tokens": 1760
+  },
+  "n_findings": 3,
+  "summary": "Documentation advertises flags and behaviors that the CLI does not implement: --count is actually --times, --recursive/glob support is absent, and missing files exit 2 instead of the documented 0.",
+  "finding_ids": [
+    "flag-count-vs-times",
+    "recursive-globs-not-implemented",
+    "missing-file-exit-code"
+  ],
+  "finding_titles": [
+    "Documented --count flag does not exist; implementation uses --times",
+    "Documented --recursive flag and glob support are not implemented",
+    "Missing file exits with code 2, but documentation says code 0"
+  ],
+  "latency_note": "CLI wall time ~6.5s for this run",
+  "usage_source": "live"
+}

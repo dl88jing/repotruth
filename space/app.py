@@ -68,7 +68,7 @@ CSS = """
 .badge { display:inline-block; padding:2px 10px; border-radius:999px; background:#111; color:#fff; font-size:12px; margin:0 4px; }
 """
 
-backend_note = f"Active backend on boot: `{resolve_backend()}` (set `REFLECTION_API_KEY` or `HF_TOKEN`, or use fixture mock)."
+backend_note = f"Active backend on boot: `{resolve_backend()}` — set `REFLECTION_API_KEY` or `HF_TOKEN` for live Beam; otherwise fixture mock with labeled fallback."
 
 with gr.Blocks(title="RepoTruth — Beam docs vs code auditor", css=CSS, theme=gr.themes.Soft()) as demo:
     gr.HTML(
@@ -95,10 +95,10 @@ with gr.Blocks(title="RepoTruth — Beam docs vs code auditor", css=CSS, theme=g
             gr.Markdown(
                 """
 ### Why Beam?
-Reflection Beam is a **501B MoE / 23B active** model with a **1M-token** context and
-**token-efficient reasoning** (~3× fewer reasoning tokens for comparable quality).
-RepoTruth is built to show that off: pack an entire mini-repo, find real doc/code contradictions,
-and watch the thrift meter.
+Reflection Beam is a **501B MoE / 23B active** model with a **1M-token** context.
+RepoTruth packs a mini-repo into one call, finds functional doc/code contradictions,
+and shows a thrift meter (live usage when keyed; fixture-seeded otherwise).
+Provider failures fall back to fixtures with a visible **FALLBACK** banner.
 """
             )
         with gr.Column(scale=2):
