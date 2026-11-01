@@ -1,0 +1,8 @@
+[
+  ["vo0", "Documentation that lies. RepoTruth catches it — live on Beam."],
+  ["vo1", "Here is the live auditor at repotruth.vercel.app. A judge lands on the page, scrolls past measured thrift stats, and opens the Live Beam auditor."],
+  ["vo2", "They switch to the tinyclick fixture, set reasoning effort to low, and click Run live audit. Beam answers in seconds with three verified findings — file and line evidence, not a mock."],
+  ["vo3", "For a real open-source repo, paste a public GitHub URL. Same Beam path, rate-limited for judges. Featured finds include five verified lies in encode slash httpcore."],
+  ["vo4", "Architecture: pack the repo, one Beam chat completion, JSON findings plus usage. Reasoning effort low cut tinyclick reasoning tokens by fifty-seven percent versus medium."],
+  ["vo5", "Try it live. RepoTruth by Green Robin Labs — for Hugging Face times Reflection Build with Beam."]
+]

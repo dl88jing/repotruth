@@ -1,76 +1,64 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=1920, height=1080">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1920, height=1080"/>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#07090f}
-#root{width:1920px;height:1080px;position:relative;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#e8ecf7}
-.scene{position:absolute;inset:0;background:#07090f}
-.k{position:absolute;left:100px;top:80px;font-size:28px;letter-spacing:.18em;text-transform:uppercase;color:#7c5cff}
-h1{position:absolute;left:100px;top:160px;font-size:86px;line-height:1.05;letter-spacing:-.03em;width:900px}
-.sub{position:absolute;left:100px;top:420px;font-size:36px;color:#9aa3b8;width:800px;line-height:1.35}
-.shot{position:absolute;right:60px;top:140px;width:860px;border-radius:16px;border:1px solid #1f2937;box-shadow:0 40px 80px rgba(0,0,0,.5)}
-.badge{position:absolute;left:100px;bottom:80px;font-size:24px;color:#6b7280}
-</style></head><body>
-<div id="root" data-composition-id="main" data-start="0" data-duration="72.939" data-width="1920" data-height="1080">
-<section id="s0" class="clip scene" data-start="0.000" data-duration="6.899" data-track-index="0">
-<div class="k">Hook</div>
-<h1>Documentation that lies.</h1>
-<img class="shot" src="assets/01-lie.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<section id="s1" class="clip scene" data-start="6.899" data-duration="12.019" data-track-index="0">
-<div class="k">1M context</div>
-<h1>Whole repo. One Beam call.</h1>
-<img class="shot" src="assets/02-pack.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<section id="s2" class="clip scene" data-start="18.919" data-duration="14.601" data-track-index="0">
-<div class="k">Findings</div>
-<h1>Cite the file. Cite the line.</h1>
-<img class="shot" src="assets/03-findings.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<section id="s3" class="clip scene" data-start="33.519" data-duration="14.153" data-track-index="0">
-<div class="k">Thrift meter</div>
-<h1>−57% reasoning tokens.</h1>
-<img class="shot" src="assets/04-thrift.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<section id="s4" class="clip scene" data-start="47.672" data-duration="14.025" data-track-index="0">
-<div class="k">Live audits</div>
-<h1>Fixtures + real OSS.</h1>
-<img class="shot" src="assets/05-fixtures.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<section id="s5" class="clip scene" data-start="61.697" data-duration="11.493" data-track-index="0">
-<div class="k">CTA</div>
-<h1>RepoTruth · Green Robin Labs</h1>
-<img class="shot" src="assets/06-cta.png" alt="">
-<div class="badge">RepoTruth · Build with Beam · LIVE</div>
-</section>
-<audio id="vo" src="assets/narration.wav" data-start="0" data-duration="72.939" data-track-index="1"></audio>
-</div>
+#root{width:1920px;height:1080px;position:relative;font-family:"IBM Plex Sans",system-ui,sans-serif;color:#e8ecf7}
+.clip video, video.clip, img.card-img{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover;background:#000}
+.overlay-bar{position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(transparent,rgba(7,9,15,.92));
+  display:flex;align-items:flex-end;padding:0 48px 28px;gap:18px;z-index:5;pointer-events:none}
+.pill{background:rgba(18,22,36,.92);border:1px solid #2a3150;border-radius:999px;padding:12px 24px;font-size:24px;font-weight:600;max-width:1400px}
+.badge{margin-left:auto;font-size:18px;color:#9aa3b8;font-weight:500}
+.live-dot{width:10px;height:10px;border-radius:50%;background:#34d399;box-shadow:0 0 12px #34d399;margin-right:8px;display:inline-block}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="113.567" data-width="1920" data-height="1080" data-fps="30">
+
+<img id="s0" class="clip card-img" src="assets/cards/title.png" alt="" data-start="0.000" data-duration="7.500" data-track-index="0"/>
+<div id="bar0" class="clip overlay-bar" data-start="0.000" data-duration="7.500" data-track-index="3"><div class="pill">RepoTruth · Build with Beam · LIVE</div><div class="badge">Demo walkthrough</div></div>
+
+<video id="v1" class="clip" src="assets/screen/landing.mp4" muted playsinline
+  data-start="7.500" data-duration="23.850" data-media-start="0" data-volume="0" data-track-index="0"></video>
+<div id="bar1" class="clip overlay-bar" data-start="7.500" data-duration="23.850" data-track-index="3"><div class="pill"><span class="live-dot"></span>Live app · repotruth.vercel.app</div><div class="badge">Screen recording</div></div>
+
+<video id="v2" class="clip" src="assets/screen/audit.mp4" muted playsinline
+  data-start="31.350" data-duration="34.610" data-media-start="0" data-volume="0" data-track-index="0"></video>
+<div id="bar2" class="clip overlay-bar" data-start="31.350" data-duration="34.610" data-track-index="3"><div class="pill"><span class="live-dot"></span>Live Beam audit · tinyclick · effort low</div><div class="badge">Screen recording</div></div>
+
+<video id="v3" class="clip" src="assets/screen/github.mp4" muted playsinline
+  data-start="65.960" data-duration="27.010" data-media-start="0" data-volume="0" data-track-index="0"></video>
+<div id="bar3" class="clip overlay-bar" data-start="65.960" data-duration="27.010" data-track-index="3"><div class="pill"><span class="live-dot"></span>GitHub mode · paste a public repo</div><div class="badge">Screen recording</div></div>
+
+<img id="s4" class="clip card-img" src="assets/cards/arch.png" alt="" data-start="92.970" data-duration="12.597" data-track-index="0"/>
+<div id="bar4" class="clip overlay-bar" data-start="92.970" data-duration="12.597" data-track-index="3"><div class="pill">Architecture · Pack → Beam → findings</div><div class="badge">RepoTruth</div></div>
+
+<img id="s5" class="clip card-img" src="assets/cards/outro.png" alt="" data-start="105.567" data-duration="8.000" data-track-index="0"/>
+<div id="bar5" class="clip overlay-bar" data-start="105.567" data-duration="8.000" data-track-index="3"><div class="pill">Try it · repotruth.vercel.app</div><div class="badge">Green Robin Labs</div></div>
+
+<audio id="vo0" src="assets/audio/vo0.wav" data-start="0.000" data-duration="4.139" data-track-index="1" data-volume="1"></audio>
+<audio id="vo1" src="assets/audio/vo1.wav" data-start="7.500" data-duration="9.600" data-track-index="1" data-volume="1"></audio>
+<audio id="vo2" src="assets/audio/vo2.wav" data-start="31.350" data-duration="11.392" data-track-index="1" data-volume="1"></audio>
+<audio id="vo3" src="assets/audio/vo3.wav" data-start="65.960" data-duration="12.480" data-track-index="1" data-volume="1"></audio>
+<audio id="vo4" src="assets/audio/vo4.wav" data-start="92.970" data-duration="11.797" data-track-index="1" data-volume="1"></audio>
+<audio id="vo5" src="assets/audio/vo5.wav" data-start="105.567" data-duration="6.080" data-track-index="1" data-volume="1"></audio>
+
 <script>
-const tl=gsap.timeline({paused:true});
-tl.from("#s0 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},0.150);
-tl.from("#s0 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},0.350);
-tl.to("#s0 .shot",{scale:1.03,duration:5.699,ease:"none"},1.200);
-tl.from("#s1 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},7.049);
-tl.from("#s1 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},7.249);
-tl.to("#s1 .shot",{scale:1.03,duration:10.819,ease:"none"},8.099);
-tl.from("#s2 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},19.069);
-tl.from("#s2 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},19.269);
-tl.to("#s2 .shot",{scale:1.03,duration:13.401,ease:"none"},20.119);
-tl.from("#s3 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},33.669);
-tl.from("#s3 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},33.869);
-tl.to("#s3 .shot",{scale:1.03,duration:12.953,ease:"none"},34.719);
-tl.from("#s4 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},47.822);
-tl.from("#s4 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},48.022);
-tl.to("#s4 .shot",{scale:1.03,duration:12.825,ease:"none"},48.872);
-tl.from("#s5 > *",{opacity:0,y:24,duration:0.7,stagger:0.12,ease:"power2.out"},61.847);
-tl.from("#s5 .shot",{x:60,opacity:0,duration:1.0,ease:"power3.out"},62.047);
-tl.to("#s5 .shot",{scale:1.03,duration:10.293,ease:"none"},62.897);
 window.__timelines = window.__timelines || {};
-window.__timelines["main"]=tl;tl.seek(0);
-</script></body></html>
+const tl = gsap.timeline({paused:true});
+tl.from("#bar0 .pill", {opacity:0, y:16, duration:0.6, ease:"power2.out"}, 0.2);
+tl.from("#bar1 .pill", {opacity:0, y:16, duration:0.5, ease:"power2.out"}, 7.650);
+tl.from("#bar2 .pill", {opacity:0, y:16, duration:0.5, ease:"power2.out"}, 31.500);
+tl.from("#bar3 .pill", {opacity:0, y:16, duration:0.5, ease:"power2.out"}, 66.110);
+tl.from("#bar4 .pill", {opacity:0, y:16, duration:0.5, ease:"power2.out"}, 93.120);
+tl.from("#bar5 .pill", {opacity:0, y:16, duration:0.5, ease:"power2.out"}, 105.717);
+window.__timelines["main"] = tl;
+</script>
+</div>
+</body>
+</html>

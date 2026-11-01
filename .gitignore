@@ -26,3 +26,7 @@ video/.hyperframes/
 .reflection_api_key
 .hf_inference_token
 live_results/
+video/renders/v2-frames/
+video/renders/*.log
+video/renders/*.pid
+video/captures/
