@@ -12,12 +12,22 @@ Built by **Green Robin Labs** for the Hugging Face × Reflection [Build with Bea
 
 [![CI](https://github.com/dl88jing/repotruth/actions/workflows/ci.yml/badge.svg)](https://github.com/dl88jing/repotruth/actions/workflows/ci.yml)
 
+## Demo video
+
+Simulated-user screen recording of the live auditor on [repotruth.vercel.app](https://repotruth.vercel.app).
+
+[![RepoTruth demo](https://img.youtube.com/vi/oI5lOF2bS2g/maxresdefault.jpg)](https://youtu.be/oI5lOF2bS2g)
+
+- **YouTube:** https://youtu.be/oI5lOF2bS2g
+- **MP4 (fallback):** [repotruth-demo-v2.mp4](https://github.com/dl88jing/repotruth/releases/download/v0.3.0/repotruth-demo-v2.mp4)
+
+
 | Artifact | Link |
 |----------|------|
 | **Live auditor (judges)** | https://repotruth.vercel.app/#auditor |
 | HF Space (measured results) | https://huggingface.co/spaces/mr-dee/repotruth |
 | Findings dataset | https://huggingface.co/datasets/mr-dee/repotruth-findings |
-| Demo video | [repotruth-demo-v2.mp4](https://github.com/dl88jing/repotruth/releases/download/v0.3.0/repotruth-demo-v2.mp4) (screen-recording walkthrough) · [local](video/renders/repotruth-demo-v2.mp4) |
+| Demo video | https://youtu.be/oI5lOF2bS2g · [MP4](https://github.com/dl88jing/repotruth/releases/download/v0.3.0/repotruth-demo-v2.mp4) |
 | Deck | [RepoTruth-Build-with-Beam.pptx](deck/RepoTruth-Build-with-Beam.pptx) |
 | Model | `Beam-1.0-501B-A23B` via Reflection OpenAI-compatible API |
 

@@ -9,7 +9,7 @@ We upgraded RepoTruth from fixture demos to **live whole-repo Beam audits**, wit
 - **Space (measured results):** https://huggingface.co/spaces/mr-dee/repotruth
 - **Dataset:** https://huggingface.co/datasets/mr-dee/repotruth-findings
 - **Source:** https://github.com/dl88jing/repotruth
-- **Demo video + deck:** in the repo (`video/renders/repotruth-demo.mp4`, `deck/RepoTruth-Build-with-Beam.pptx`) and as a GitHub Release asset
+- **Demo video:** https://youtu.be/oI5lOF2bS2g (screen recording of the live app) · [MP4](https://github.com/dl88jing/repotruth/releases/download/v0.3.0/repotruth-demo-v2.mp4) · **Deck:** `deck/RepoTruth-Build-with-Beam.pptx`
 
 Quick smoke:
 ```bash

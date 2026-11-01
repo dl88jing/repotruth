@@ -12,7 +12,7 @@
 | **GitHub** | https://github.com/dl88jing/repotruth |
 | **Landing** | https://repotruth.vercel.app |
 | **Findings dataset** | https://huggingface.co/datasets/mr-dee/repotruth-findings |
-| **Demo video** | https://github.com/dl88jing/repotruth/blob/master/video/renders/repotruth-demo.mp4 |
+| **Demo video** | https://youtu.be/oI5lOF2bS2g · [MP4](https://github.com/dl88jing/repotruth/releases/download/v0.3.0/repotruth-demo-v2.mp4) |
 | **Deck** | https://github.com/dl88jing/repotruth/blob/master/deck/RepoTruth-Build-with-Beam.pptx |
 
 ## One-liner
