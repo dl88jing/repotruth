@@ -90,7 +90,7 @@ Full JSON: [`docs/audits/`](docs/audits/) and the Hub [dataset](https://huggingf
 
 ### Deterministic citation check (no model in the loop)
 
-Beam proposes findings; `scripts/check_citations.py` re-checks every saved live finding against the source it cites. Fixtures are checked locally. Real repos are fetched at the exact commit in `live_results/real_*.json`. It checks that each `doc_refs`/`code_refs` file exists, that any `:LINE` or `:START-END` is in range, and that each backtick-quoted evidence span appears verbatim in the cited files.
+Beam proposes findings; `scripts/check_citations.py` re-checks every saved live finding against the source it cites. Fixtures are checked locally. Real repos are fetched at the exact commit in `docs/audits/real_*.json`. It checks that each `doc_refs`/`code_refs` file exists, that any `:LINE` or `:START-END` is in range, and that each backtick-quoted evidence span appears verbatim in the cited files.
 
 Measured Nov 2, 2026 PT, over 10 saved live runs (24 findings):
 
@@ -101,7 +101,7 @@ Measured Nov 2, 2026 PT, over 10 saved live runs (24 findings):
 | findings with all refs valid | 24 / 24 |
 | quoted spans found verbatim in cited files | 50 / 53 |
 
-The 3 spans not found verbatim are paraphrases. Two are elided with `...` (`count_p.add_argument("--times", ...)`), and one is a reformatted `pyproject.toml` dependency list. This check catches fabricated paths and lines. It does **not** judge whether a contradiction is true, so the human-verified counts above still stand. Full output: [`live_results/citation_check.json`](live_results/citation_check.json).
+The 3 spans not found verbatim are paraphrases. Two are elided with `...` (`count_p.add_argument("--times", ...)`), and one is a reformatted `pyproject.toml` dependency list. This check catches fabricated paths and lines. It does **not** judge whether a contradiction is true, so the human-verified counts above still stand. Full output: [`docs/audits/citation_check.json`](docs/audits/citation_check.json).
 
 ```bash
 python3 scripts/check_citations.py                 # fixtures + real repos at pinned commits

@@ -10,7 +10,7 @@ without any model in the loop:
 
 Spans that are paraphrased or elided (``...``) count as *not found verbatim*;
 that is a conservative flag, not proof of a hallucination. It does not decide whether a contradiction is *true* — that still needs a human
-re-read (see ``verified`` in ``live_results/``). It only flags citations that
+re-read (see ``verified`` in ``docs/audits/``). It only flags citations that
 cannot be real, so they are never shown as evidence.
 """
 from __future__ import annotations

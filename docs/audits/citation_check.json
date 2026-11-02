@@ -1,0 +1,847 @@
+{
+  "total": {
+    "findings": 24,
+    "findings_all_refs_ok": 24,
+    "refs": 66,
+    "refs_exist": 66,
+    "line_refs": 6,
+    "line_refs_in_range": 6,
+    "evidence_spans": 53,
+    "spans_in_cited_files": 50,
+    "spans_elsewhere_in_repo": 0,
+    "spans_not_found": 3
+  },
+  "runs": [
+    {
+      "file": "tinyclick_high.json",
+      "target": "fixtures/tinyclick",
+      "effort": "high",
+      "summary": {
+        "findings": 3,
+        "findings_all_refs_ok": 3,
+        "refs": 9,
+        "refs_exist": 9,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 8,
+        "spans_in_cited_files": 7,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 1
+      },
+      "findings": [
+        {
+          "id": "flag-name-mismatch",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 2,
+          "spans_in_repo": 0,
+          "spans_missing": [
+            "count_p.add_argument(\"--times\", ...)"
+          ],
+          "refs_ok": true
+        },
+        {
+          "id": "glob-recursive-not-implemented",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 4,
+          "spans_in_cited": 4,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "missing-file-exit-code",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 1,
+          "spans_in_cited": 1,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "tinyclick_low.json",
+      "target": "fixtures/tinyclick",
+      "effort": "low",
+      "summary": {
+        "findings": 3,
+        "findings_all_refs_ok": 3,
+        "refs": 9,
+        "refs_exist": 9,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 7,
+        "spans_in_cited_files": 7,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "flag-name-drift",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "missing-file-exit-code",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 1,
+          "spans_in_cited": 1,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "glob-recursive-unsupported",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "tinyclick_medium.json",
+      "target": "fixtures/tinyclick",
+      "effort": "medium",
+      "summary": {
+        "findings": 3,
+        "findings_all_refs_ok": 3,
+        "refs": 10,
+        "refs_exist": 10,
+        "line_refs": 4,
+        "line_refs_in_range": 4,
+        "evidence_spans": 10,
+        "spans_in_cited_files": 9,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 1
+      },
+      "findings": [
+        {
+          "id": "flag-name-drift",
+          "refs": [
+            {
+              "ref": "README.md: usage `tinyclick count PATH [--count]`",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md: `--count` flag table row",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py:15 `count_p.add_argument(\"--times\", ...)`",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": true
+            }
+          ],
+          "spans_total": 6,
+          "spans_in_cited": 5,
+          "spans_in_repo": 0,
+          "spans_missing": [
+            "count_p.add_argument(\"--times\", ...)"
+          ],
+          "refs_ok": true
+        },
+        {
+          "id": "missing-file-exit-code",
+          "refs": [
+            {
+              "ref": "README.md: 'exits with code 0'",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md: '0 success or missing file (non-fatal)'",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py:20-23 missing path branch returns 2",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": true
+            }
+          ],
+          "spans_total": 0,
+          "spans_in_cited": 0,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "glob-recursive-unimplemented",
+          "refs": [
+            {
+              "ref": "README.md: 'Supports globs like src/**/*.py.'",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/cli.md: `--recursive` flag table row",
+              "path": "docs/cli.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/cli.py:13 `count_p.add_argument(\"path\", type=Path)`",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": true
+            },
+            {
+              "ref": "src/cli.py:20 `if not args.path.exists()`",
+              "path": "src/cli.py",
+              "exists": true,
+              "lines_ok": true
+            }
+          ],
+          "spans_total": 4,
+          "spans_in_cited": 4,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "tinyhttp_medium.json",
+      "target": "fixtures/tinyhttp",
+      "effort": "medium",
+      "summary": {
+        "findings": 3,
+        "findings_all_refs_ok": 3,
+        "refs": 6,
+        "refs_exist": 6,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 3,
+        "spans_in_cited_files": 3,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "default-timeout-mismatch",
+          "refs": [
+            {
+              "ref": "README.md: 'Default timeout is **30 seconds**.'",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/client.py: DEFAULT_TIMEOUT = 5.0",
+              "path": "src/client.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 0,
+          "spans_in_cited": 0,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "default-retries-mismatch",
+          "refs": [
+            {
+              "ref": "README.md: 'Retries are enabled by default (3 attempts).'",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/client.py: DEFAULT_RETRIES = 0",
+              "path": "src/client.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 0,
+          "spans_in_cited": 0,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "json-always-available-mismatch",
+          "refs": [
+            {
+              "ref": "README.md: '`Client.request` returns a `Response` with `.json()` always available.'",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/client.py: Response.json() raises ValueError when content-type is not application/json",
+              "path": "src/client.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "tinystar_medium.json",
+      "target": "fixtures/tinystar",
+      "effort": "medium",
+      "summary": {
+        "findings": 3,
+        "findings_all_refs_ok": 3,
+        "refs": 6,
+        "refs_exist": 6,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 9,
+        "spans_in_cited_files": 9,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "route-async-decorator",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/router.py",
+              "path": "src/router.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 2,
+          "spans_in_cited": 2,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "middleware-order",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/router.py",
+              "path": "src/router.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "path-param-syntax",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/router.py",
+              "path": "src/router.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 4,
+          "spans_in_cited": 4,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "real_click_medium.json",
+      "target": "https://github.com/pallets/click@2247b35",
+      "effort": "medium",
+      "summary": {
+        "findings": 0,
+        "findings_all_refs_ok": 0,
+        "refs": 0,
+        "refs_exist": 0,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 0,
+        "spans_in_cited_files": 0,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": []
+    },
+    {
+      "file": "real_httpcore_medium.json",
+      "target": "https://github.com/encode/httpcore@10a6582",
+      "effort": "medium",
+      "summary": {
+        "findings": 5,
+        "findings_all_refs_ok": 5,
+        "refs": 16,
+        "refs_exist": 16,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 7,
+        "spans_in_cited_files": 7,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "proxy-object-has-no-request-method",
+          "refs": [
+            {
+              "ref": "docs/proxies.md",
+              "path": "docs/proxies.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_models.py",
+              "path": "httpcore/_models.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 1,
+          "spans_in_cited": 1,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "request-model-does-not-auto-add-host",
+          "refs": [
+            {
+              "ref": "docs/requests-responses-urls.md",
+              "path": "docs/requests-responses-urls.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_models.py",
+              "path": "httpcore/_models.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_sync/interfaces.py",
+              "path": "httpcore/_sync/interfaces.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_async/interfaces.py",
+              "path": "httpcore/_async/interfaces.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 1,
+          "spans_in_cited": 1,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "nonexistent-asyncio-backend",
+          "refs": [
+            {
+              "ref": "docs/table-of-contents.md",
+              "path": "docs/table-of-contents.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/network-backends.md",
+              "path": "docs/network-backends.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_backends/anyio.py",
+              "path": "httpcore/_backends/anyio.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_backends/__init__.py",
+              "path": "httpcore/_backends/__init__.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 2,
+          "spans_in_cited": 2,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "incorrect-http11-trace-event-name",
+          "refs": [
+            {
+              "ref": "docs/extensions.md",
+              "path": "docs/extensions.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_async/http11.py",
+              "path": "httpcore/_async/http11.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_sync/http11.py",
+              "path": "httpcore/_sync/http11.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "proxy-http2-support-contradiction",
+          "refs": [
+            {
+              "ref": "docs/proxies.md",
+              "path": "docs/proxies.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_async/http_proxy.py",
+              "path": "httpcore/_async/http_proxy.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "httpcore/_sync/http_proxy.py",
+              "path": "httpcore/_sync/http_proxy.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 0,
+          "spans_in_cited": 0,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "real_itsdangerous_medium.json",
+      "target": "https://github.com/pallets/itsdangerous@672971d",
+      "effort": "medium",
+      "summary": {
+        "findings": 2,
+        "findings_all_refs_ok": 2,
+        "refs": 4,
+        "refs_exist": 4,
+        "line_refs": 2,
+        "line_refs_in_range": 2,
+        "evidence_spans": 6,
+        "spans_in_cited_files": 6,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "serializer-dumps-return-type",
+          "refs": [
+            {
+              "ref": "docs/serializer.rst:16-18",
+              "path": "docs/serializer.rst",
+              "exists": true,
+              "lines_ok": true
+            },
+            {
+              "ref": "src/itsdangerous/serializer.py:309-318",
+              "path": "src/itsdangerous/serializer.py",
+              "exists": true,
+              "lines_ok": true
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        },
+        {
+          "id": "serializer-example-missing-urlsafe-import",
+          "refs": [
+            {
+              "ref": "docs/serializer.rst",
+              "path": "docs/serializer.rst",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/itsdangerous/url_safe.py",
+              "path": "src/itsdangerous/url_safe.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 3,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "real_requests_medium.json",
+      "target": "https://github.com/psf/requests@3c7baaa",
+      "effort": "medium",
+      "summary": {
+        "findings": 1,
+        "findings_all_refs_ok": 1,
+        "refs": 3,
+        "refs_exist": 3,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 0,
+        "spans_in_cited_files": 0,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 0
+      },
+      "findings": [
+        {
+          "id": "api-docs-seven-methods",
+          "refs": [
+            {
+              "ref": "docs/api.rst",
+              "path": "docs/api.rst",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/requests/api.py",
+              "path": "src/requests/api.py",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "src/requests/__init__.py",
+              "path": "src/requests/__init__.py",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 0,
+          "spans_in_cited": 0,
+          "spans_in_repo": 0,
+          "spans_missing": [],
+          "refs_ok": true
+        }
+      ]
+    },
+    {
+      "file": "real_starlette_medium.json",
+      "target": "https://github.com/Kludex/starlette@2745bbc",
+      "effort": "medium",
+      "summary": {
+        "findings": 1,
+        "findings_all_refs_ok": 1,
+        "refs": 3,
+        "refs_exist": 3,
+        "line_refs": 0,
+        "line_refs_in_range": 0,
+        "evidence_spans": 3,
+        "spans_in_cited_files": 2,
+        "spans_elsewhere_in_repo": 0,
+        "spans_not_found": 1
+      },
+      "findings": [
+        {
+          "id": "docs-dependency-typing-extensions",
+          "refs": [
+            {
+              "ref": "README.md",
+              "path": "README.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "docs/index.md",
+              "path": "docs/index.md",
+              "exists": true,
+              "lines_ok": null
+            },
+            {
+              "ref": "pyproject.toml",
+              "path": "pyproject.toml",
+              "exists": true,
+              "lines_ok": null
+            }
+          ],
+          "spans_total": 3,
+          "spans_in_cited": 2,
+          "spans_in_repo": 0,
+          "spans_missing": [
+            "dependencies = [\"anyio>=4.0.0,<5\", \"typing_extensions>=4.10.0; python_version < '3.13'\"]"
+          ],
+          "refs_ok": true
+        }
+      ]
+    }
+  ]
+}

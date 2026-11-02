@@ -2,9 +2,9 @@
 """Re-check every saved live Beam finding against the source it cites.
 
 Fixtures are checked against ``fixtures/<name>``. Real repos are fetched at the
-exact commit recorded in ``live_results/real_*.json`` (public GitHub tarball,
+exact commit recorded in ``docs/audits/real_*.json`` (public GitHub tarball,
 no token) unless ``--fixtures-only`` is set. Writes
-``live_results/citation_check.json``. No model calls.
+``docs/audits/citation_check.json``. No model calls.
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT / "app"))
 
 from repotruth.citations import check_findings, summarize, to_jsonable  # noqa: E402
 
-LIVE = ROOT / "live_results"
+LIVE = ROOT / "docs" / "audits"
 
 
 def _fetch(github: str, commit: str, dest: Path) -> Path:

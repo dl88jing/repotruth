@@ -7,7 +7,7 @@ from repotruth.citations import check_findings, check_ref, summarize
 
 ROOT = Path(__file__).resolve().parents[1]
 FIX = ROOT / "fixtures"
-LIVE = ROOT / "live_results"
+LIVE = ROOT / "docs" / "audits"
 
 
 def test_ref_forms_parse():
