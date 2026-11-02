@@ -17,6 +17,8 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Fixture demo
         run: ./demo.sh
+      - name: Citation check (saved live fixture findings, no network)
+        run: python scripts/check_citations.py --fixtures-only --out /tmp/citation_check.json
       - name: Pytest
         run: python -m pytest -q
       - name: Secret scan (gitleaks)
